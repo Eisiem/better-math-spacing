@@ -1,21 +1,19 @@
 #import "corpus.typ": corpus
-#import "../../lib.typ": rule, spacing
-#import "../../examples/profiles.typ": profiles
 
 #let mode = sys.inputs.at("profile", default: "native")
 #let case = sys.inputs.at("case", default: "")
 #let count = int(sys.inputs.at("count", default: "0"))
 #let unique = sys.inputs.at("unique", default: "false") == "true"
 #let check-width = mode == "estimate"
-#let apply(eq) = {
+#let apply = if mode != "native" {
+  import "../../lib.typ": rule, spacing
+  import "../../examples/profiles.typ": profiles
   let config = if mode == "admit" {
     (rules: _ => panic("AUDIT: analyzed"),)
   } else if check-width {
-    (rules: (rule(e => {
-      if e.native == 0pt { auto } else { e.native }
-    }),),)
+    (rules: (rule(e => if e.native == 0pt { auto } else { e.native }),),)
   } else { profiles.at(mode) }
-  spacing(eq, ..config)
+  spacing.with(..config)
 }
 #let workload = sys.inputs.at("workload", default: "false") == "true"
 #let format(eq) = {

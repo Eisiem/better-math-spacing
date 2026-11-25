@@ -155,10 +155,15 @@ def check():
         assert all(abs(item["w"]) < 0.01 and abs(item["y"]) < 0.01 for item in fidelity), fidelity
         compatibility = audit_metadata("compat", "query(metadata).first().value")
         assert abs(compatibility["weak"] - compatibility["weak-target"]) < 0.001
-        for profile in ("native", "basic", "adaptive"):
+        proofs_native = MathPage(render("proofs", "html", folder="tests/audit"))
+        assert len(proofs_native.formulas) == 21
+        assert proofs_native.links == ["#gram", "#gram", "#gram", "#bound"]
+        for profile in ("basic", "compact", "hierarchical", "adaptive", "wide"):
             proofs = MathPage(render("proofs", "html", f"profile={profile}", folder="tests/audit"))
-            assert len(proofs.formulas) >= 15 and proofs.links.count("#gram") == 3
-            assert proofs.links.count("#bound") == 1
+            assert proofs.links == proofs_native.links
+            assert [structure(n) for n in proofs.formulas] == [
+                structure(n) for n in proofs_native.formulas
+            ]
 
         assert "#ff4136" in render("package", folder="tests")
         packaged = MathPage(render("package", "html", folder="tests"))

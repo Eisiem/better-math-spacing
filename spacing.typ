@@ -44,8 +44,8 @@
   none
 }
 
-#let atom(n, index, previous, groups, delimiter: none) = {
-  let c = if delimiter == none { base-class(n) } else { delimiter }
+#let atom(n, index, previous, groups) = {
+  let c = base-class(n)
   let role = if c == "vary" {
     if previous in ("normal", "alphabetic", "closing", "fence") { "binary" } else { "unary" }
   } else if c in ("binary", "unary") { c }
@@ -113,6 +113,7 @@
   if f == seq {
     let runs = ()
     let run = ()
+    let fenced = path.len() > 0 and path.last().parent == math.lr
     let flattened = flatten(n.children)
     if flattened == none { return none }
     for child in flattened.reserved {
@@ -127,13 +128,18 @@
         continue
       }
       let prev = if run.len() > 0 { run.last().class }
-      let delimiter = if (
-        path.len() > 0 and path.last().parent == math.lr
-          and i in (0, flattened.flat.len() - 1) and base-class(child) in delimiters
-      ) {
-        if i == 0 { "opening" } else { "closing" }
+      let a = atom(child, i, prev, groups)
+      // Typst treats a delimiter at the start of lr as opening even if its
+      // glyph is normally closing (e.g. a reversed bracket).
+      if fenced and a.class in delimiters {
+        if i == 0 {
+          a.class = "opening"
+          a.r = "opening"
+        } else if i == flattened.flat.len() - 1 {
+          a.l = "closing"
+        }
       }
-      run.push(atom(child, i, prev, groups, delimiter: delimiter))
+      run.push(a)
       let nested = descend(child, "children", size, index: i)
       if nested == none { return none }
       lists += nested
