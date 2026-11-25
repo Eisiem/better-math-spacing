@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.2.1 · Experimental
+
+- Allow aligned continuation spacing before a simple letter, glyph or number carrying a subscript, superscript or both.
+- Preserve column alignment in paged output and native MathML at crossed alignment points. Add regressions for indexed terms and unsupported boundaries.
+
 ## 0.2.0 · Experimental
 
 - Add opt-in row context through `rows: "context"` and `rows: "aligned"`. Boundary callbacks expose `edge.row.index`, `edge.row.atoms` and `edge.aligned` in these modes. Each nested sequence has its own rows.

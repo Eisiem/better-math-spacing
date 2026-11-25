@@ -107,7 +107,7 @@ def check_scopes(native, changed):
 
 def check_aligned_rows(render):
     colors = {"#236ba3": "b", "#a3236b": "c", "#178459": "p",
-              "#a35f23": "q", "#5f23a3": "+"}
+              "#a35f23": "q", "#5f23a3": "+", "#9a2941": "λ", "#086b70": "x"}
 
     def positions(case, profile):
         svg = ET.fromstring(render("aligned", "svg", f"case={case}",
@@ -159,6 +159,28 @@ def check_aligned_rows(render):
     for case in ("prefix", "even", "double", "explicit", "explicit-right", "fenced",
                  "opaque", "single", "trailing", "compound"):
         assert positions(case, "native") == positions(case, "binary"), case
+
+    indexed = (("subscript", "λ"), ("superscript", "x"), ("both", "x"))
+    indexed_controls = (
+        "indexed-prefix", "indexed-even", "indexed-double", "indexed-explicit",
+        "indexed-explicit-right", "compound", "indexed-compound", "opaque-script",
+        "opaque-script-followed", "left-script",
+    )
+    for case, base in indexed:
+        original, edited = (positions(case, profile) for profile in ("native", "binary"))
+        for layout in (original, edited):
+            upper, lower = layout[base]
+            near(upper, lower)
+        near((edited[base][1] - edited["+"][0]) - (original[base][1] - original["+"][0]), 9)
+    for case in indexed_controls:
+        assert positions(case, "native") == positions(case, "binary"), case
+    for case in (*(case for case, _ in indexed), *indexed_controls):
+        original, edited = (
+            MathPage(render("aligned", "html", f"case={case}", f"profile={profile}", folder="tests")).formulas
+            for profile in ("native", "binary")
+        )
+        assert len(original) == len(edited) == 1, case
+        assert ET.tostring(original[0]) == ET.tostring(edited[0]), case
 
     assert positions("rank-geometry", "profile") == positions("rank-geometry", "reference")
     for case in ("leading", "prefix", "columns", "double", "explicit", "opaque"):

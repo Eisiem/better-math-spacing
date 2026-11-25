@@ -123,7 +123,7 @@
 
 // Map the original left atom to the marker. Only the right-aligned half of
 // a column pair can absorb a gap without indenting the next column's term.
-#let alignment-plan(kids, continuation) = {
+#let alignment-plan(kids, continuation, collect-attachment) = {
   let anchors = (:)
   let binary = (:)
   if not kids.any(k => k.func() == align-point) { return none }
@@ -140,11 +140,19 @@
       odd = not odd
       if not odd or i == 0 or i + 1 == items.len() { continue }
       let (index, op) = items.at(i - 1)
-      let term = items.at(i + 1).last()
-      if op.func() != glyph or term.func() not in (glyph, text) { continue }
+      if op.func() != glyph { continue }
+      let (term-index, term) = items.at(i + 1)
+      let attached = term.func() == math.attach
+      let base = if attached { term.base } else { term }
+      if base.func() not in (glyph, text) { continue }
       let class = base-class(op)
       if (class not in ("vary", "binary", "unary", "relation", "large")
         or base-class(term) not in ("alphabetic", "normal")) { continue }
+      // An opaque script can exclude the attachment from the editable runs.
+      // Left scripts can offset the base from the column anchor.
+      if attached and (term.has("tl") or term.has("bl") or collect-attachment(term, term-index) == none) {
+        continue
+      }
       anchors.insert(str(index), marker)
       if (continuation != none and class == "vary" and i >= 2
         and items.at(i - 2).last().func() == linebreak
@@ -168,7 +176,11 @@
     let fenced = path.len() > 0 and path.last().parent == math.lr
     let flattened = flatten(n.children)
     if flattened == none { return none }
-    let plan = if across-align { alignment-plan(flattened.flat, continuation) }
+    let plan = if across-align {
+      alignment-plan(flattened.flat, continuation, (term, i) =>
+        collect(term, path + ((parent: f, field: "children", index: i),), size,
+          groups, context-needed, rows, singleton: false))
+    }
     if path != () {
       for child in flattened.reserved {
         lists.push((node: child, path: path + ("nested sequence",), size: size, runs: ()))

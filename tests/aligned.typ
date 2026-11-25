@@ -8,9 +8,29 @@
 #show kind.where(text: "c"): set text(fill: rgb("#a3236b"))
 #show kind.where(text: "p"): set text(fill: rgb("#178459"))
 #show kind.where(text: "q"): set text(fill: rgb("#a35f23"))
+#show kind.where(text: "λ"): set text(fill: rgb("#9a2941"))
+#show kind.where(text: "x"): set text(fill: rgb("#086b70"))
 #show kind.where(text: "+"): set text(fill: rgb("#5f23a3"))
 
+#let indexed = (
+  subscript: $lambda_1$.body,
+  superscript: $x^3$.body,
+  both: $x_1^3$.body,
+)
+
 #let samples = (
+  subscript: $ a = &lambda_0 \ + &lambda_1 $,
+  superscript: $ a = &x^2 \ + &x^3 $,
+  both: $ a = &x_0^2 \ + &x_1^3 $,
+  indexed-prefix: $ a = &x_0 \ &+x_1 $,
+  indexed-even: $ a = &b + &p_1 \ d = &c + &q^3 $,
+  indexed-double: $ a = &&x_0 \ + &&x_1 $,
+  indexed-explicit: $ a = &x_0 \ + #h(3pt) &x_1 $,
+  indexed-explicit-right: $ a = &x_0 \ + & #h(3pt) x_1 $,
+  indexed-compound: $ a = &b \ + &frac(x, d)_1 $,
+  opaque-script: $ a = &x_0 \ + &x_#box[y] $,
+  opaque-script-followed: $ a = &x_0 \ + &x_#box[y] + z $,
+  left-script: $ a = &x \ + &attach(x, tl: 1) $,
   leading: $ a = &b \ + &c + d $,
   prefix: $ a = &b \ &+c + d $,
   columns: $ a = &b & a = &p \ + &c & + &q $,
@@ -110,8 +130,15 @@
   if mode == "native" { eq }
   else {
     let signs = (binary: group("vary", after: 9pt, test: a => effective(a) == "binary"),)
-    let cross = rule(9pt, when: e => e.aligned and e.left.node == $+$.body
-      and (effective(e.left) == "binary" or case != "leading"))
+    let cross = rule(9pt, when: e => {
+      if not e.aligned or e.left.node != $+$.body { return false }
+      if case in indexed {
+        assert.eq(e.left.role, "unary")
+        assert.eq(e.left.spacing-role, "binary")
+        assert.eq(e.right.node, indexed.at(case))
+      }
+      effective(e.left) == "binary" or case != "leading"
+    })
     let selected = mode in ("binary", "groups", "role-only", "cancel", "scale", "large-gap")
     let rules = if mode == "legacy" { (rule(e => {
       assert(e.run in e.equation.runs)

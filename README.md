@@ -1,6 +1,6 @@
 # Better math spacing
 
-**Experimental 0.2.0 · Typst 0.15.1**
+**Experimental 0.2.1 · Typst 0.15.1**
 
 Adjust spacing between math atoms with a Typst show rule. You write the equation once and specify which boundaries to adjust. The original equation retains its numbering, labels and references. The package has no runtime dependencies.
 
@@ -9,21 +9,21 @@ Adjust spacing between math atoms with a Typst show rule. You write the equation
 Use a checkout of the [GitHub repository](https://github.com/Eisiem/better-math-spacing) with Typst 0.15.1. On Linux or macOS, run the installer with Python 3 available:
 
 ```sh
-git clone --branch v0.2.0 https://github.com/Eisiem/better-math-spacing.git
+git clone --branch v0.2.1 https://github.com/Eisiem/better-math-spacing.git
 cd better-math-spacing
 ./scripts/link-local.sh
 ```
 
-The script links the checkout into `local/better-math-spacing/0.2.0` under Typst's package directory. It uses `TYPST_PACKAGE_PATH` when set. Otherwise, it uses `${XDG_DATA_HOME:-$HOME/.local/share}/typst/packages` on Linux or `~/Library/Application Support/typst/packages` on macOS. The script prints the link path and can be run again for the same checkout. [Typst's local package documentation](https://github.com/typst/packages#local-packages)
+The script links the checkout into `local/better-math-spacing/0.2.1` under Typst's package directory. It uses `TYPST_PACKAGE_PATH` when set. Otherwise, it uses `${XDG_DATA_HOME:-$HOME/.local/share}/typst/packages` on Linux or `~/Library/Application Support/typst/packages` on macOS. The script prints the link path and can be run again for the same checkout. [Typst's local package documentation](https://github.com/typst/packages#local-packages)
 
-Run `typst info` to locate a custom package directory. Pass that directory as the script's only argument, or set `TYPST_PACKAGE_PATH` for both the installer and the compiler. To install manually, place a symlink to the checkout at `<package-directory>/local/better-math-spacing/0.2.0`. On Windows, a directory junction also works. Keep the checkout at its linked location. To uninstall, remove the link.
+Run `typst info` to locate a custom package directory. Pass that directory as the script's only argument, or set `TYPST_PACKAGE_PATH` for both the installer and the compiler. To install manually, place a symlink to the checkout at `<package-directory>/local/better-math-spacing/0.2.1`. On Windows, a directory junction also works. Keep the checkout at its linked location. To uninstall, remove the link.
 
 ## Quick start
 
 In any project compiled with your local Typst CLI:
 
 ```typst
-#import "@local/better-math-spacing:0.2.0": group, spacing
+#import "@local/better-math-spacing:0.2.1": group, spacing
 
 #show math.equation: spacing.with(groups: (
   signs: group(sym.plus, sym.minus, before: 4mm, after: 4mm),
@@ -142,7 +142,7 @@ The predicate selects the leading plus in the second row. The group gives it a 4
 
 ### Scale a hierarchy dynamically
 
-Use the example profile from a checkout. To use it in a separate project, copy [row-profile.typ](examples/row-profile.typ) next to your document and replace its first import path with `@local/better-math-spacing:0.2.0`.
+Use the example profile from a checkout. To use it in a separate project, copy [row-profile.typ](examples/row-profile.typ) next to your document and replace its first import path with `@local/better-math-spacing:0.2.1`.
 
 ```typst
 #import "row-profile.typ": row-profile
@@ -170,7 +170,7 @@ The profile ranks arithmetic and set operations, relations, logical connectives 
 ## Known limitations
 
 - The native profile estimates spacing from Typst's math classes and script styles. It uses `auto` for some font-dependent boundaries. [Typst 0.15.1 spacing algorithm](https://github.com/typst/typst/blob/v0.15.1/crates/typst-library/src/math/ir/process.rs#L256-L295)
-- Explicit spacing, text, opaque content, row breaks and alignment points divide editable runs. With `rows: "aligned"`, the package can replace a gap before the first, third or subsequent odd-numbered marker in a top-level, multiline display equation. The left atom must be a direct glyph of class `vary`, `binary`, `unary`, `relation` or `large`. The right atom must be a simple letter, ordinary glyph or number. Whitespace in the source is harmless. Explicit gaps on either side, consecutive markers (`&&`), even markers, inline and single-row equations retain their native cross-marker spacing. An opaque expansion or nested fence with hidden layout markers can also disable crossing. Within-run edits still apply. Opaque roots and some nested compounds are delegated to Typst. The package also leaves boundaries native when adding a gap could change an operator's role.
+- Explicit spacing, text, opaque content, row breaks and alignment points divide editable runs. With `rows: "aligned"`, the package can replace a gap before the first, third or subsequent odd-numbered marker in a top-level, multiline display equation. The left atom must be a direct glyph of class `vary`, `binary`, `unary`, `relation` or `large`. The right atom can be a simple letter, ordinary glyph or number, including a term with a subscript, superscript or both on such a base. Compound bases such as fractions, left scripts and attachments with opaque scripts retain their native cross-marker gap. Whitespace in the source is harmless. Explicit gaps on either side, consecutive markers (`&&`), even markers, inline and single-row equations retain their native cross-marker spacing. An opaque expansion or nested fence with hidden layout markers can also disable crossing. Within-run edits still apply. Opaque roots and some nested compounds are delegated to Typst. The package also leaves boundaries native when adding a gap could change an operator's role.
 - Typst 0.15.1 exposes identical glyph content for `xor` and `plus.o` (⊕). Callbacks cannot recover which spelling was used. A profile can give that glyph a shared interpretation or leave its spacing native. The example leaves it native.
 - Equal sequences in the same selector scope must receive the same plan. Two identical branches of one fraction produce a diagnostic if they request different plans. Separate siblings have independent scopes.
 - External show rules can change a class, size or content after the package analyzes an equation. Combine spacing transformations in a single `rules` array to control their order.
