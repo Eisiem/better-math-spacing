@@ -64,7 +64,7 @@ def functional(root, temporary):
     return outcomes
 
 
-def benchmark(root, temporary, repeats):
+def benchmark(root, temporary, repeats, unaligned, rows):
     source = root / "tests/audit/run.typ"
     out = temporary / "benchmark.pdf"
     samples = []
@@ -73,7 +73,10 @@ def benchmark(root, temporary, repeats):
     for count, unique in ((100, False), (1000, False), (1000, True), (5000, False), (5000, True)):
         for repetition in range(repeats):
             for mode in MODES[repetition % len(MODES):] + MODES[:repetition % len(MODES)]:
-                args = arguments(root, mode, count=count, unique=str(unique).lower(), workload="true")
+                args = arguments(root, mode, count=count, unique=str(unique).lower(),
+                                 workload="unaligned" if unaligned else "true")
+                if rows:
+                    args.extend(("--input", f"rows={rows}"))
                 with (temporary / "stderr").open("w+") as log:
                     start = perf_counter()
                     child = subprocess.Popen(["typst", "compile", *args, source, out],
@@ -95,6 +98,8 @@ def main():
     parser.add_argument("--root", type=Path, default=ROOT)
     parser.add_argument("--bench", type=int, default=0, metavar="REPS")
     parser.add_argument("--bench-only", action="store_true")
+    parser.add_argument("--unaligned", action="store_true", help="exclude the aligned fixture from timing runs")
+    parser.add_argument("--rows", choices=("context", "aligned"), help="request row metadata in benchmark profiles")
     args = parser.parse_args()
     root = args.root.resolve()
     stamp = dict(typst=subprocess.check_output(["typst", "--version"], text=True).strip(),
@@ -104,7 +109,8 @@ def main():
         if not args.bench_only:
             stamp["functional"] = functional(root, tmp)
         if args.bench:
-            stamp["samples"] = benchmark(root, tmp, args.bench)
+            stamp["workload"] = dict(repeats=args.bench, unaligned=args.unaligned, rows=args.rows)
+            stamp["samples"] = benchmark(root, tmp, args.bench, args.unaligned, args.rows)
     print(json.dumps(stamp, indent=2, ensure_ascii=False))
 
 

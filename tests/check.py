@@ -105,6 +105,94 @@ def check_scopes(native, changed):
     assert widths(num) == widths(denom) == ["3pt", "3pt"]
 
 
+def check_aligned_rows(render):
+    colors = {"#236ba3": "b", "#a3236b": "c", "#178459": "p",
+              "#a35f23": "q", "#5f23a3": "+"}
+
+    def positions(case, profile):
+        svg = ET.fromstring(render("aligned", "svg", f"case={case}",
+                                   f"profile={profile}", folder="tests"))
+        result = {}
+        for group in svg.findall("{*}g"):
+            matrix = group.attrib["transform"].removeprefix("matrix(").removesuffix(")").split()
+            for glyph in group.findall("{*}use"):
+                color = glyph.get("fill")
+                if color in colors:
+                    assert matrix[:4] == ["1", "0", "0", "-1"], matrix
+                    x = float(matrix[4]) + float(glyph.get("x", "0"))
+                    result.setdefault(colors[color], []).append(x)
+        assert result, (case, profile)
+        return result
+
+    def near(a, b):
+        assert abs(a - b) < 0.001, (a, b)
+
+    native = positions("leading", "native")
+    assert positions("leading", "legacy") == native
+    assert positions("leading", "across") == native
+    assert positions("leading", "cancel") == native
+    for profile, gap in (("binary", 9), ("groups", 9), ("role-only", 16 * 4 / 18), ("scale", 16 / 3)):
+        edited = positions("leading", profile)
+        near(edited["b"][0], edited["c"][0])
+        if profile != "groups":
+            near(edited["b"][0], native["b"][0])
+        near((edited["c"][0] - edited["+"][0]) - (native["c"][0] - native["+"][0]), gap)
+
+    wide = positions("leading", "large-gap")
+    near(wide["b"][0], wide["c"][0])
+    near((wide["c"][0] - wide["+"][0]) - (native["c"][0] - native["+"][0]), 40)
+    assert abs(wide["b"][0] - native["b"][0]) > 1
+
+    # A group selecting binary signs changes the infix sign later in this
+    # row. The gap from the separate prefix + to c must still be native.
+    for profile in ("groups", "role-only"):
+        prefix = positions("prefix", profile)
+        original = positions("prefix", "native")
+        near(prefix["c"][0] - prefix["+"][0], original["c"][0] - original["+"][0])
+
+    before = positions("columns", "native")
+    after = positions("columns", "binary")
+    for upper, lower, i in (("b", "c", 0), ("p", "q", 1)):
+        near(after[upper][0], after[lower][0])
+        near((after[lower][0] - after["+"][i]) - (before[lower][0] - before["+"][i]),
+             9 - (0 if i == 0 else 16 * 4 / 18))
+    for case in ("prefix", "even", "double", "explicit", "explicit-right", "fenced",
+                 "opaque", "single", "trailing", "compound"):
+        assert positions(case, "native") == positions(case, "binary"), case
+
+    assert positions("rank-geometry", "profile") == positions("rank-geometry", "reference")
+    for case in ("leading", "prefix", "columns", "double", "explicit", "opaque"):
+        def formula(profile):
+            return MathPage(render("aligned", "html", f"case={case}",
+                                   f"profile={profile}", folder="tests")).formulas[0]
+        original = formula("native")
+        for profile in ("across", "binary", "groups", "role-only"):
+            assert structure(formula(profile)) == structure(original), (case, profile)
+
+    corpus = MathPage(render("aligned", "html", "case=corpus", folder="tests")).formulas
+    assert len(corpus) == 2 * 69
+    paired = list(zip(corpus[::2], corpus[1::2]))
+    assert all(structure(a) == structure(b) for a, b in paired)
+    assert sum(widths(a) != widths(b) for a, b in paired) == 61
+    render("aligned", "svg", "case=nested-width", folder="tests")
+    render("aligned", "svg", "case=contexts", folder="tests")
+    render("aligned", "svg", "case=contexts", "profile=context-only", folder="tests")
+    formulas = MathPage(render("aligned", "html", "case=profile", folder="tests")).formulas
+    original = MathPage(render("aligned", "html", "case=profile", "profile=native-control",
+                               folder="tests")).formulas
+    assert [structure(f) for f in formulas] == [structure(f) for f in original]
+    assert [widths(f) for f in formulas] == [
+        ["2pt"] * 4 + ["3pt", "4pt", "4pt"] + ["2pt"] * 3,
+        ["4pt"] * 3 + ["8pt"] * 2,
+        ["2pt", "2pt", "8pt", "8pt", "1em", "4pt", "4pt"],
+        ["2pt"],
+        ["2pt", "2pt", "4pt", "4pt", "8pt", "8pt", "16pt", "16pt"],
+        ["2pt", "2pt", "4pt", "4pt", "2pt", "2pt"],
+        [],
+        ["2pt", "2pt", "4pt", "2pt", "2pt", "4pt", "4pt"],
+    ]
+
+
 def check():
     with TemporaryDirectory() as tmp:
         def render(name, ext="svg", *inputs, folder="probes", error=None):
@@ -125,6 +213,8 @@ def check():
 
         def page(name, *inputs):
             return MathPage(render(name, "html", *inputs))
+
+        check_aligned_rows(render)
 
         for fixture in ("geometry", "structure", "cases", "nested"):
             render(fixture)
@@ -229,4 +319,4 @@ def check():
 if __name__ == "__main__":
     print(subprocess.check_output(["typst", "--version"], text=True).strip())
     check()
-    print("OK · Probes and package passed geometry, 40 gallery equations, MathML, references and collision checks.")
+    print("OK · Row geometry, operator forms, probes, 40 gallery equations, references and collision checks passed.")

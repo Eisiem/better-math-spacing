@@ -45,12 +45,13 @@
   none
 }
 
-#let atom(n, index, c, previous, groups) = {
+#let atom(n, index, c, previous, groups, expose-node: true, continuation: false) = {
   let kind = n.func()
   let role = if c == "vary" {
     if previous in ("normal", "alphabetic", "closing", "fence") { "binary" } else { "unary" }
   } else if c in ("binary", "unary") { c }
   let a = (node: n, index: index, class: c, role: role)
+  if continuation { a.spacing-role = "binary" }
   let names = ()
   let before = none
   let after = none
@@ -86,6 +87,9 @@
     if delimiters.first() != none { l = "opening" }
     if delimiters.last() != none { r = "closing" }
   }
+  // Static rules only need the element function for the binary pin guard.
+  // Dropping the occurrence here lets identical class patterns share an edit plan.
+  if not expose-node { a.node = kind }
   a + (groups: names, before: before, after: after, l: l, r: r)
 }
 
@@ -107,17 +111,64 @@
   (flat: if start == 0 { kids } else { flat + kids.slice(start) }, reserved: reserved)
 }
 
+// Alignment markers can escape a nested fence into its parent layout. A
+// native or external expansion with unknown markers makes the parity unsafe.
+#let known-layout(n) = {
+  let f = n.func()
+  if f == seq { return n.children.all(known-layout) }
+  if f in (math.lr, math.class) { return known-layout(n.body) }
+  f in (glyph, blank, text, h, math.primes, math.attach, math.frac, math.root,
+    math.mat, math.vec, math.op)
+}
+
+// Map the original left atom to the marker. Only the right-aligned half of
+// a column pair can absorb a gap without indenting the next column's term.
+#let alignment-plan(kids, continuation) = {
+  let anchors = (:)
+  let binary = (:)
+  if not kids.any(k => k.func() == align-point) { return none }
+  let items = kids.enumerate().filter(((_, k)) => k.func() != blank)
+  let first-break = items.position(((_, k)) => k.func() == linebreak)
+  if (first-break != none and items.slice(first-break + 1).any(((_, k)) => base-class(k) != none)
+    and kids.all(k => k.func() in (linebreak, align-point) or known-layout(k))) {
+    let row = 0
+    let odd = false
+    for (i, item) in items.enumerate() {
+      let (marker, k) = item
+      if k.func() == linebreak { row += 1; odd = false; continue }
+      if k.func() != align-point { continue }
+      odd = not odd
+      if not odd or i == 0 or i + 1 == items.len() { continue }
+      let (index, op) = items.at(i - 1)
+      let term = items.at(i + 1).last()
+      if op.func() != glyph or term.func() not in (glyph, text) { continue }
+      let class = base-class(op)
+      if (class not in ("vary", "binary", "unary", "relation", "large")
+        or base-class(term) not in ("alphabetic", "normal")) { continue }
+      anchors.insert(str(index), marker)
+      if (continuation != none and class == "vary" and i >= 2
+        and items.at(i - 2).last().func() == linebreak
+        and continuation((node: op, class: class, role: "unary", index: index, row-index: row))) {
+        binary.insert(str(index), true)
+      }
+    }
+  }
+  (anchors: anchors, binary: binary)
+}
+
 // Collect all selectable lists, including occurrences with an empty edit plan.
 // The outer sequence can isolate each compound child in its own show scope.
-#let collect(n, path, size, groups, context-needed, singleton: true) = {
+#let collect(n, path, size, groups, context-needed, rows, singleton: true, across-align: false, continuation: none) = {
   let f = n.func()
   let lists = ()
   if f == seq {
     let runs = ()
+    let breaks = ()
     let run = ()
     let fenced = path.len() > 0 and path.last().parent == math.lr
     let flattened = flatten(n.children)
     if flattened == none { return none }
+    let plan = if across-align { alignment-plan(flattened.flat, continuation) }
     if path != () {
       for child in flattened.reserved {
         lists.push((node: child, path: path + ("nested sequence",), size: size, runs: ()))
@@ -127,12 +178,12 @@
     for (i, child) in flattened.flat.enumerate() {
       let kind = child.func()
       if kind == blank { continue }
-      let c = base-class(child)
+      let c = if kind == glyph { class-by-glyph.at(child.text, default: none) } else { base-class(child) }
       // Leaves cannot contain a sequence matched by a sibling's recipe.
       // In a deeper compound, abandon the branch if an opaque node could.
-      if kind not in (glyph, text, math.primes, h, linebreak, align-point) {
+      if kind != glyph and kind not in (text, math.primes, h, linebreak, align-point) {
         let nested = collect(child, path + ((parent: f, field: "children", index: i),), size,
-          groups, context-needed, singleton: false)
+          groups, context-needed, rows, singleton: false)
         if nested == none {
           if path != () { return none }
           c = none
@@ -142,6 +193,7 @@
         if run.len() > 0 { runs.push(run); run = () }
         // Alignment and a nonzero percentage gap are invisible to the
         // native role resolver. A top-level row break starts a new row.
+        if rows and kind == linebreak { breaks.push(runs.len()) }
         if kind == align-point or (kind == h and type(child.amount) == ratio and child.amount != 0%) {
           continue
         }
@@ -150,7 +202,8 @@
         } else if c == "vary" { c } else { auto }
         continue
       }
-      let a = atom(child, i, c, previous, groups)
+      let a = atom(child, i, c, previous, groups, expose-node: context-needed,
+        continuation: plan != none and plan.binary != (:) and c == "vary" and str(i) in plan.binary)
       // Typst treats a delimiter at the start of lr as opening even if its
       // glyph is normally closing (e.g. a reversed bracket).
       if fenced and a.class in delimiters {
@@ -168,7 +221,11 @@
     // An entirely inaccessible root keeps the original delegation contract.
     if path == () and runs == () and flattened.flat.any(k =>
       k.func() != blank and (k.func() != h or type(k.amount) != length)) { return none }
-    return ((node: n, path: path, size: size, runs: runs),) + lists
+    let list = (node: n, path: path, size: size, runs: runs)
+    if breaks != () { list.breaks = breaks }
+    // An extra child in the MathML cell can change the exported operator form.
+    if plan != none and plan.anchors != (:) and target() == "paged" { list.anchors = plan.anchors }
+    return (list,) + lists
   }
   let c = base-class(n)
   if singleton and context-needed and c != none {
@@ -179,12 +236,12 @@
   }
   let slots = ()
   if f in (math.mat, math.vec) {
-    let rows = if f == math.mat { n.rows } else { n.children.map(x => (x,)) }
-    for (row, cells) in rows.enumerate() {
+    let cells-by-row = if f == math.mat { n.rows } else { n.children.map(x => (x,)) }
+    for (row, cells) in cells-by-row.enumerate() {
       for (col, cell) in cells.enumerate() {
         let field = if f == math.mat { "rows" } else { "children" }
         let nested = collect(cell, path + ((parent: f, field: field, row: row, col: col),),
-          calc.min(size + 1, 2), groups, context-needed)
+          calc.min(size + 1, 2), groups, context-needed, rows)
         if nested == none { return none }
         lists += nested
       }
@@ -206,7 +263,7 @@
       level = if n.at("style", default: math.frac.style) == "horizontal" { size }
         else { calc.min(size + 1, 2) }
     }
-    let nested = collect(child, path + ((parent: f, field: field),), level, groups, context-needed)
+    let nested = collect(child, path + ((parent: f, field: field),), level, groups, context-needed, rows)
     if nested == none { return none }
     lists += nested
   }
@@ -226,17 +283,25 @@
   0pt
 }
 
-#let edits(list, equation, rules) = {
+#let edits(list, equation, rules, row: none, across: none, initial: auto) = {
   let result = (:)
+  if row == auto {
+    row = (index: 0, atoms: if list.runs.len() == 1 { list.runs.first() } else { list.runs.join(default: ()) })
+  }
   for run in list.runs {
     for (i, pair) in run.windows(2).enumerate() {
       let (l, r) = pair
-      let width = if r.before != none { r.before } else if l.after != none { l.after } else { auto }
+      let width = if r.before != none { r.before } else if l.after != none { l.after } else { initial }
       if width == auto and rules.len() == 0 { continue }
       let base = if rules != () { native(l.r, r.l, list.size >= 2) }
       let edge = if equation != none {
         (left: l, right: r, index: i, path: list.path, run: run, equation: equation,
           left-class: l.r, right-class: r.l, left-after: l.after, right-before: r.before, native: base)
+      }
+      if row != none {
+        edge.row = row
+        edge.aligned = across != none
+        if across != none { edge.run = across; edge.index = across.len() - 1 }
       }
       for spec in rules {
         if spec.left != none and spec.left not in l.groups { continue }
@@ -260,11 +325,39 @@
       // changes the exported operator form. Keep that boundary native.
       if (
         l.index == 0 and l.r == "opening" and r.class == "vary" and r.role == "unary"
-          and list.path.len() > 0 and list.path.last().parent == math.lr
+          and (if "fenced" in list { list.fenced } else { list.path != () and list.path.last().parent == math.lr })
       ) { continue }
       let pin = r.class == "vary" and r.role == "binary"
-      if pin and r.node.func() != glyph { continue }
+      if pin and (if equation == none { r.node } else { r.node.func() }) != glyph { continue }
       result.insert(str(r.index), (width, pin))
+    }
+  }
+  result
+}
+
+// Only sequences with explicit breaks or editable markers need this loop.
+// The normal resolver also handles the two-atom bridge. Its output goes
+// before the marker and its callback observes the original left run.
+#let row-edits(list, rules, equation) = {
+  let result = (:)
+  let start = 0
+  let anchors = list.at("anchors", default: (:))
+  for (index, end) in (list.at("breaks", default: ()) + (list.runs.len(),)).enumerate() {
+    let runs = list.runs.slice(start, end)
+    start = end
+    let row = if equation != none { (index: index, atoms: runs.join(default: ())) }
+    if anchors == (:) {
+      result += edits(list + (runs: runs), equation, rules, row: row)
+      continue
+    }
+    for (j, run) in runs.enumerate() {
+      result += edits(list + (runs: (run,)), equation, rules, row: row)
+      let marker = anchors.at(str(run.last().index), default: none)
+      if marker == none { continue }
+      let term = runs.at(j + 1).first()
+      let cross = edits(list + (runs: ((run.last(), term),)), equation, rules,
+        row: row, across: run, initial: if "spacing-role" in run.last() { math.med.amount } else { auto })
+      if cross != (:) { result.insert(str(marker), cross.at(str(term.index))) }
     }
   }
   result
@@ -296,24 +389,36 @@
   node
 }
 
-#let spacing(eq, groups: (:), rules: ()) = {
-  if groups == (:) and rules == () { return eq }
-  let contextual = type(rules) == function or rules.any(s => s.when != none or type(s.value) == function)
-  let lists = collect(eq.body, (), if eq.block { 0 } else { 1 }, groups, contextual)
-  if lists == none { return eq }
-  let equation = if contextual { (node: eq, runs: lists.map(it => it.runs).join(default: ())) }
+// Static profiles can reuse a plan for an equal body. A contextual profile
+// receives the original equation, including its label, numbering and location.
+#let plan(source, block, groups, rules, rows, continuation, contextual) = {
+  let body = if contextual { source.body } else { source }
+  let lists = collect(body, (), if block { 0 } else { 1 }, groups, contextual, rows != none,
+    across-align: rows == "aligned" and block, continuation: continuation)
+  if lists == none { return ((:), (:)) }
+  let equation = if contextual { (node: source, runs: lists.map(it => it.runs).join(default: ())) }
   if type(rules) == function { rules = rules(equation) }
   for spec in rules {
     for name in (spec.left, spec.right) {
       assert(name == none or name in groups, message: "Unknown spacing group: " + repr(name))
     }
   }
-  let outer = eq.body.func() == seq
+  let outer = body.func() == seq
   let root-edits = (:)
   let scopes = (:)
   for list in lists {
     if list.node.func() != seq { continue }
-    let changes = edits(list, equation, rules)
+    let changes = if list.runs == () or (list.runs.len() == 1 and list.runs.first().len() == 1) {
+      (:)
+    } else if "breaks" in list or "anchors" in list {
+      row-edits(list, rules, equation)
+    } else {
+      let view = if contextual { list } else {
+        let fenced = list.runs != () and list.path != () and list.path.last().parent == math.lr
+        (runs: list.runs, size: list.size, fenced: fenced)
+      }
+      edits(view, equation, rules, row: if rows != none and contextual { auto })
+    }
     if outer and list.path == () { root-edits = changes; continue }
     let key = if outer { str(list.path.first().index) } else { "body" }
     let plans = scopes.at(key, default: ())
@@ -339,8 +444,19 @@
     }
     scopes.insert(key, active)
   }
+  (root-edits, scopes)
+}
+
+#let spacing(eq, groups: (:), rules: (), rows: none, continuation: none) = {
+  assert(rows in (none, "context", "aligned"), message: "Expected none, context or aligned for rows")
+  assert(continuation == none or (type(continuation) == function and rows == "aligned"),
+    message: "continuation requires aligned rows and a predicate")
+  if groups == (:) and rules == () and continuation == none { return eq }
+  let contextual = type(rules) == function or rules.any(s => s.when != none or type(s.value) == function)
+  let (root-edits, scopes) = plan(if contextual { eq } else { eq.body }, eq.block,
+    groups, rules, rows, continuation, contextual)
   if root-edits == (:) and scopes == (:) { return eq }
-  if outer {
+  if eq.body.func() == seq {
     show seq.where(children: eq.body.children): it => {
       let kids = flatten(it.children).flat
       for (key, plans) in scopes {

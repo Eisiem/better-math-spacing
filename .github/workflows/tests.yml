@@ -23,6 +23,8 @@ jobs:
           done
           typst compile --root . --ignore-system-fonts examples/gallery.typ build/gallery.svg
           cmp docs/gallery.svg build/gallery.svg
+          typst compile --root . --ignore-system-fonts examples/aligned-rows.typ build/aligned-rows.svg
+          cmp docs/aligned-rows.svg build/aligned-rows.svg
       - name: Test the local package from a separate project
         run: |
           export TYPST_PACKAGE_PATH="$RUNNER_TEMP/typst-packages"
