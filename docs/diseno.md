@@ -1,5 +1,7 @@
 # Diseño propuesto
 
+Documento histórico de la fase de viabilidad. La versión 0.1.0 incorpora factores porcentuales y un perfil nativo. El contrato vigente está en la [documentación del paquete](../README.md).
+
 El paquete decidiría **una distancia por cada frontera entre dos átomos vecinos**. Así puede resolver qué ocurre entre dos operadores que solicitan espacio en el mismo sitio. Los átomos seguirían siendo elementos de Typst. La decisión sería una longitud o `auto`, que delega esa frontera al motor.
 
 Los fragmentos de esta página describen la futura interfaz. Las versiones que se pueden ejecutar hoy están en las [políticas de las sondas](../probes/policies.typ) y en la [prueba con dos niveles](../probes/nested.typ).
