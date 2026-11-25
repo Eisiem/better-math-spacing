@@ -25,7 +25,10 @@ class MathPage(HTMLParser):
         if tag == "a":
             self.links.append(dict(attrs).get("href"))
         if tag == "math":
-            self.builder = ET.TreeBuilder()
+            if self.builder is None:
+                self.builder = ET.TreeBuilder()
+                self.depth = 0
+            self.depth += 1
         if self.builder is not None:
             self.builder.start(tag, dict(attrs))
 
@@ -33,8 +36,10 @@ class MathPage(HTMLParser):
         if self.builder is not None:
             self.builder.end(tag)
             if tag == "math":
-                self.formulas.append(self.builder.close())
-                self.builder = None
+                self.depth -= 1
+                if self.depth == 0:
+                    self.formulas.append(self.builder.close())
+                    self.builder = None
 
     def handle_data(self, data):
         if self.builder is not None:
@@ -174,6 +179,12 @@ def check():
         render("package", "svg", "case=collision", folder="tests", error="Conflicting spacing")
         render("package", "svg", "case=invalid", folder="tests", error="Expected a length")
         check_scopes(page("scopes"), page("scopes", "scope=edited"))
+        fractions, local, mixed, split = page("occurrences").formulas
+        assert structure(fractions) == structure(local)
+        assert widths(local) == ["2pt", "2pt", "7pt", "7pt"]
+        assert structure(mixed) == structure(split)
+        assert widths(split) == ["3pt", "3pt", *widths(mixed)]
+
 
         original_nested = page("nested")
         changed_nested = page("nested", "spaced=yes")
