@@ -2,6 +2,15 @@
 #let glyph = $a$.body.func()
 #let blank = [ ].func()
 #let classes = json("math-classes.json")
+#let class-by-glyph = {
+  let lookup = (:)
+  for (class, chars) in classes {
+    for ch in chars.codepoints() { lookup.insert(ch, class) }
+  }
+  lookup
+}
+#let delimiters = ("opening", "closing", "fence")
+#let number = regex("^(?:[0-9]+(?:\\.[0-9]*)?|\\.[0-9]+)$")
 
 #let group(..members, before: none, after: none, test: none) = {
   assert(members.named().len() == 0, message: "Unknown group option")
@@ -25,21 +34,18 @@
 #let base-class(n) = {
   let f = n.func()
   if f == glyph {
-    let ch = n.text
-    if ch.codepoints().len() != 1 { return none }
-    let hit = classes.pairs().find(pair => pair.last().contains(ch))
-    return if hit != none { hit.first() }
+    return class-by-glyph.at(n.text, default: none)
   }
   if f == math.attach { return base-class(n.base) }
   if f == math.class { return n.class }
   if f == math.op { return "large" }
-  if f == text and n.text.match(regex("^[0-9]+$")) != none { return "normal" }
+  if f == text and n.text.match(number) != none { return "normal" }
   if f in (math.lr, math.frac, math.mat, math.vec, math.root, math.primes) { return "normal" }
   none
 }
 
-#let atom(n, index, previous, groups) = {
-  let c = base-class(n)
+#let atom(n, index, previous, groups, delimiter: none) = {
+  let c = if delimiter == none { base-class(n) } else { delimiter }
   let role = if c == "vary" {
     if previous in ("normal", "alphabetic", "closing", "fence") { "binary" } else { "unary" }
   } else if c in ("binary", "unary") { c }
@@ -68,8 +74,8 @@
       r = none
     } else {
       let kids = body.children
-      if base-class(kids.first()) in ("opening", "fence") { l = "opening" }
-      if base-class(kids.last()) in ("closing", "fence") { r = "closing" }
+      if base-class(kids.first()) in delimiters { l = "opening" }
+      if base-class(kids.last()) in delimiters { r = "closing" }
     }
   } else if n.func() in (math.mat, math.vec) {
     let delimiters = n.at("delim", default: if n.func() == math.mat { math.mat.delim } else { math.vec.delim })
@@ -121,16 +127,13 @@
         continue
       }
       let prev = if run.len() > 0 { run.last().class }
-      let a = atom(child, i, prev, groups)
-      // lr removes the outer delimiters before resolving the inner operators.
-      if path.len() > 0 and path.last().parent == math.lr {
-        if i == 0 and a.class in ("opening", "fence") {
-          a.class = "opening"
-          a.r = "opening"
-        }
-        if i == flattened.flat.len() - 1 and a.class in ("closing", "fence") { a.l = "closing" }
+      let delimiter = if (
+        path.len() > 0 and path.last().parent == math.lr
+          and i in (0, flattened.flat.len() - 1) and base-class(child) in delimiters
+      ) {
+        if i == 0 { "opening" } else { "closing" }
       }
-      run.push(a)
+      run.push(atom(child, i, prev, groups, delimiter: delimiter))
       let nested = descend(child, "children", size, index: i)
       if nested == none { return none }
       lists += nested
@@ -193,8 +196,9 @@
   for run in list.runs {
     for (i, pair) in run.windows(2).enumerate() {
       let (l, r) = pair
-      let base = native(l.r, r.l, list.size >= 2)
       let width = if r.before != none { r.before } else if l.after != none { l.after } else { auto }
+      if width == auto and rules.len() == 0 { continue }
+      let base = native(l.r, r.l, list.size >= 2)
       let edge = (left: l, right: r, index: i, path: list.path, run: run, equation: equation,
         left-class: l.r, right-class: r.l, left-after: l.after, right-before: r.before, native: base)
       for spec in rules {
@@ -212,6 +216,12 @@
         assert(width == auto or type(width) == length, message: "Expected auto or a length from rule")
       }
       if width == auto { continue }
+      // In MathML a space before the initial vary in a fenced expression
+      // changes the exported operator form. Keep that boundary native.
+      if (
+        l.index == 0 and l.r == "opening" and r.class == "vary" and r.role == "unary"
+          and list.path.len() > 0 and list.path.last().parent == math.lr
+      ) { continue }
       let pin = r.class == "vary" and r.role == "binary"
       if pin and r.node.func() != glyph { continue }
       result.insert(str(r.index), (width, pin))
@@ -225,7 +235,7 @@
   for (i, child) in flatten(kids).flat.enumerate() {
     let change = changes.at(str(i), default: none)
     if change != none {
-      out.push(h(change.first()))
+      out.push(h(change.first(), weak: false))
       if change.last() { child = math.class("binary", child) }
     }
     out.push(child)

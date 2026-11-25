@@ -1,6 +1,7 @@
 """Regresiones de las sondas. Requiere Python 3 y la CLI de Typst 0.15.1."""
 from html.parser import HTMLParser
 from pathlib import Path
+import json
 import subprocess
 from tempfile import TemporaryDirectory
 import xml.etree.ElementTree as ET
@@ -127,11 +128,37 @@ def check():
         assert [widths(eq) for eq in cases.formulas] == [["11.3386pt"] * 2] * 2
         check_gallery(page("gallery").formulas)
         gallery = MathPage(render("gallery", "html", folder="examples"))
-        check_gallery(gallery.formulas[:16])
-        assert len(gallery.formulas) == 24
-        for native, edited in zip(gallery.formulas[16::2], gallery.formulas[17::2]):
-            assert structure(native) == structure(edited)
-            assert widths(edited) and not widths(native)
+        assert len(gallery.formulas) == 40
+        signatures = set()
+        for i in range(0, 40, 5):
+            native, *profiles = gallery.formulas[i:i + 5]
+            signatures.add(tuple(tuple(widths(n)) for n in profiles))
+            assert all(structure(native) == structure(n) for n in profiles)
+        assert len(signatures) >= 5
+        assert widths(gallery.formulas[2 * 5 + 2]) != widths(gallery.formulas[2 * 5 + 1])
+        for case, expected in (("decimal", ["0.32em", "0.32em"]),
+                               ("nested-sign", ["0.32em"] * 4)):
+            native = MathPage(render("run", "html", f"case={case}", folder="tests/audit"))
+            adjusted = MathPage(render("run", "html", f"case={case}", "profile=basic",
+                                       folder="tests/audit"))
+            a, = native.formulas
+            b, = adjusted.formulas
+            assert structure(a) == structure(b)
+            assert widths(b) == expected, (case, widths(b))
+
+        def audit_metadata(name, expression):
+            command = ["typst", "eval", "--ignore-system-fonts", "--root", str(ROOT),
+                       "--in", str(ROOT / f"tests/audit/{name}.typ"), expression]
+            return json.loads(subprocess.check_output(command, text=True))
+
+        fidelity = audit_metadata("fidelity", "query(metadata).map(n => n.value).flatten()")
+        assert all(abs(item["w"]) < 0.01 and abs(item["y"]) < 0.01 for item in fidelity), fidelity
+        compatibility = audit_metadata("compat", "query(metadata).first().value")
+        assert abs(compatibility["weak"] - compatibility["weak-target"]) < 0.001
+        for profile in ("native", "basic", "adaptive"):
+            proofs = MathPage(render("proofs", "html", f"profile={profile}", folder="tests/audit"))
+            assert len(proofs.formulas) >= 15 and proofs.links.count("#gram") == 3
+            assert proofs.links.count("#bound") == 1
 
         assert "#ff4136" in render("package", folder="tests")
         packaged = MathPage(render("package", "html", folder="tests"))
@@ -172,4 +199,4 @@ def check():
 if __name__ == "__main__":
     print(subprocess.check_output(["typst", "--version"], text=True).strip())
     check()
-    print("OK · Sondas y paquete 0.1.0: geometría, 12 pares visuales, MathML, referencias y colisiones.")
+    print("OK · Sondas y paquete 0.1.0: geometría, 40 fórmulas en la galería, MathML, referencias y colisiones.")
