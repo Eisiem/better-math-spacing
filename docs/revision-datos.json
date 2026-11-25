@@ -1,0 +1,3418 @@
+{
+  "baseline_commit": "bdeb191",
+  "core_commit": "99613c8",
+  "typst": "typst 0.15.1 (9dfd3a08)",
+  "platform": "Linux-6.18.60-3-cachyos-lts-x86_64-with-glibc2.44",
+  "cpu": "Intel Core i7-13700HX",
+  "baseline_phase_samples": [
+    {
+      "stage": "entry",
+      "profile": "basic",
+      "seconds": 0.09584074200029136,
+      "peak_mib": 51.83203125
+    },
+    {
+      "stage": "entry",
+      "profile": "adaptive",
+      "seconds": 0.09937323499980266,
+      "peak_mib": 51.87109375
+    },
+    {
+      "stage": "collected",
+      "profile": "basic",
+      "seconds": 0.30210590600017895,
+      "peak_mib": 88.51953125
+    },
+    {
+      "stage": "collected",
+      "profile": "adaptive",
+      "seconds": 0.28278988799957006,
+      "peak_mib": 85.63671875
+    },
+    {
+      "stage": "planned",
+      "profile": "basic",
+      "seconds": 0.42370057300013286,
+      "peak_mib": 95.26171875
+    },
+    {
+      "stage": "planned",
+      "profile": "adaptive",
+      "seconds": 0.6627547440002672,
+      "peak_mib": 113.6640625
+    },
+    {
+      "stage": "complete",
+      "profile": "basic",
+      "seconds": 0.4785172940000848,
+      "peak_mib": 111.91796875
+    },
+    {
+      "stage": "complete",
+      "profile": "adaptive",
+      "seconds": 0.7580071390002558,
+      "peak_mib": 135.5078125
+    },
+    {
+      "stage": "entry",
+      "profile": "basic",
+      "seconds": 0.09999420200074383,
+      "peak_mib": 51.8359375
+    },
+    {
+      "stage": "entry",
+      "profile": "adaptive",
+      "seconds": 0.09559618100047373,
+      "peak_mib": 51.62890625
+    },
+    {
+      "stage": "collected",
+      "profile": "basic",
+      "seconds": 0.2899099189999106,
+      "peak_mib": 87.09375
+    },
+    {
+      "stage": "collected",
+      "profile": "adaptive",
+      "seconds": 0.2821369230005075,
+      "peak_mib": 85.140625
+    },
+    {
+      "stage": "planned",
+      "profile": "basic",
+      "seconds": 0.4234245360003115,
+      "peak_mib": 95.046875
+    },
+    {
+      "stage": "planned",
+      "profile": "adaptive",
+      "seconds": 0.6629582120003761,
+      "peak_mib": 114.078125
+    },
+    {
+      "stage": "complete",
+      "profile": "basic",
+      "seconds": 0.47671112900025037,
+      "peak_mib": 111.76171875
+    },
+    {
+      "stage": "complete",
+      "profile": "adaptive",
+      "seconds": 0.7550073579996024,
+      "peak_mib": 133.578125
+    },
+    {
+      "stage": "entry",
+      "profile": "basic",
+      "seconds": 0.10403389499970217,
+      "peak_mib": 51.8515625
+    },
+    {
+      "stage": "entry",
+      "profile": "adaptive",
+      "seconds": 0.09423245800007862,
+      "peak_mib": 52.640625
+    },
+    {
+      "stage": "collected",
+      "profile": "basic",
+      "seconds": 0.2915047559999948,
+      "peak_mib": 86.89453125
+    },
+    {
+      "stage": "collected",
+      "profile": "adaptive",
+      "seconds": 0.2856626729999334,
+      "peak_mib": 84.91796875
+    },
+    {
+      "stage": "planned",
+      "profile": "basic",
+      "seconds": 0.42214173400043364,
+      "peak_mib": 97.0859375
+    },
+    {
+      "stage": "planned",
+      "profile": "adaptive",
+      "seconds": 0.6878667490000225,
+      "peak_mib": 111.66796875
+    },
+    {
+      "stage": "complete",
+      "profile": "basic",
+      "seconds": 0.4711016049996033,
+      "peak_mib": 114.7890625
+    },
+    {
+      "stage": "complete",
+      "profile": "adaptive",
+      "seconds": 0.7518751459992927,
+      "peak_mib": 133.390625
+    }
+  ],
+  "compatibility": {
+    "before": {
+      "show_widths": [
+        "3pt",
+        "4pt",
+        "3pt",
+        "4pt"
+      ],
+      "base": {
+        "external": 28.333333333333336,
+        "stacked": 33.0,
+        "swapped": 31.666666666666664,
+        "combined": 45.0,
+        "weak": 39.669333333333334,
+        "weak-target": 39.669333333333334
+      },
+      "reclass": {
+        "external": 27.666666666666664,
+        "stacked": 33.0,
+        "swapped": 31.666666666666664,
+        "combined": 45.0,
+        "weak": 39.669333333333334,
+        "weak-target": 39.669333333333334
+      }
+    },
+    "after": {
+      "show_widths": [
+        "3pt",
+        "4pt"
+      ],
+      "base": {
+        "external": 28.333333333333336,
+        "stacked": 33.0,
+        "swapped": 31.666666666666664,
+        "combined": 45.0,
+        "weak": 39.669333333333334,
+        "weak-target": 39.669333333333334
+      },
+      "reclass": {
+        "external": 27.666666666666664,
+        "stacked": 33.0,
+        "swapped": 31.666666666666664,
+        "combined": 45.0,
+        "weak": 39.669333333333334,
+        "weak-target": 39.669333333333334
+      }
+    }
+  },
+  "exact_mathml": {
+    "compared": 282,
+    "different": []
+  },
+  "functional": [
+    {
+      "id": "literal",
+      "basic": {
+        "structure": true,
+        "changed": false
+      },
+      "compact": {
+        "structure": true,
+        "changed": false
+      },
+      "hierarchical": {
+        "structure": true,
+        "changed": false
+      },
+      "adaptive": {
+        "structure": true,
+        "changed": false
+      },
+      "wide": {
+        "structure": true,
+        "changed": false
+      },
+      "analyzed": true,
+      "estimate": {
+        "structure": true,
+        "changed": false,
+        "delta-pt": 0.0
+      }
+    },
+    {
+      "id": "integer",
+      "basic": {
+        "structure": true,
+        "changed": true
+      },
+      "compact": {
+        "structure": true,
+        "changed": true
+      },
+      "hierarchical": {
+        "structure": true,
+        "changed": true
+      },
+      "adaptive": {
+        "structure": true,
+        "changed": true
+      },
+      "wide": {
+        "structure": true,
+        "changed": true
+      },
+      "analyzed": true,
+      "estimate": {
+        "structure": true,
+        "changed": true,
+        "delta-pt": 0.0
+      }
+    },
+    {
+      "id": "signs",
+      "basic": {
+        "structure": true,
+        "changed": true
+      },
+      "compact": {
+        "structure": true,
+        "changed": true
+      },
+      "hierarchical": {
+        "structure": true,
+        "changed": false
+      },
+      "adaptive": {
+        "structure": true,
+        "changed": true
+      },
+      "wide": {
+        "structure": true,
+        "changed": true
+      },
+      "analyzed": true,
+      "estimate": {
+        "structure": true,
+        "changed": true,
+        "delta-pt": 0.0
+      }
+    },
+    {
+      "id": "adjacent",
+      "basic": {
+        "structure": true,
+        "changed": true
+      },
+      "compact": {
+        "structure": true,
+        "changed": true
+      },
+      "hierarchical": {
+        "structure": true,
+        "changed": false
+      },
+      "adaptive": {
+        "structure": true,
+        "changed": true
+      },
+      "wide": {
+        "structure": true,
+        "changed": true
+      },
+      "analyzed": true,
+      "estimate": {
+        "structure": true,
+        "changed": true,
+        "delta-pt": 0.0
+      }
+    },
+    {
+      "id": "nested-sign",
+      "basic": {
+        "structure": true,
+        "changed": true
+      },
+      "compact": {
+        "structure": true,
+        "changed": true
+      },
+      "hierarchical": {
+        "structure": true,
+        "changed": false
+      },
+      "adaptive": {
+        "structure": true,
+        "changed": true
+      },
+      "wide": {
+        "structure": true,
+        "changed": true
+      },
+      "analyzed": true,
+      "estimate": {
+        "structure": true,
+        "changed": true,
+        "delta-pt": 0.0
+      }
+    },
+    {
+      "id": "tuple",
+      "basic": {
+        "structure": true,
+        "changed": true
+      },
+      "compact": {
+        "structure": true,
+        "changed": true
+      },
+      "hierarchical": {
+        "structure": true,
+        "changed": false
+      },
+      "adaptive": {
+        "structure": true,
+        "changed": true
+      },
+      "wide": {
+        "structure": true,
+        "changed": true
+      },
+      "analyzed": true,
+      "estimate": {
+        "structure": true,
+        "changed": true,
+        "delta-pt": 0.0
+      }
+    },
+    {
+      "id": "identity",
+      "basic": {
+        "structure": true,
+        "changed": true
+      },
+      "compact": {
+        "structure": true,
+        "changed": true
+      },
+      "hierarchical": {
+        "structure": true,
+        "changed": true
+      },
+      "adaptive": {
+        "structure": true,
+        "changed": true
+      },
+      "wide": {
+        "structure": true,
+        "changed": true
+      },
+      "analyzed": true,
+      "estimate": {
+        "structure": true,
+        "changed": true,
+        "delta-pt": 0.0
+      }
+    },
+    {
+      "id": "imply",
+      "basic": {
+        "structure": true,
+        "changed": true
+      },
+      "compact": {
+        "structure": true,
+        "changed": true
+      },
+      "hierarchical": {
+        "structure": true,
+        "changed": true
+      },
+      "adaptive": {
+        "structure": true,
+        "changed": true
+      },
+      "wide": {
+        "structure": true,
+        "changed": true
+      },
+      "analyzed": true,
+      "estimate": {
+        "structure": true,
+        "changed": true,
+        "delta-pt": 0.0
+      }
+    },
+    {
+      "id": "lone-arrow",
+      "basic": {
+        "structure": true,
+        "changed": false
+      },
+      "compact": {
+        "structure": true,
+        "changed": true
+      },
+      "hierarchical": {
+        "structure": true,
+        "changed": false
+      },
+      "adaptive": {
+        "structure": true,
+        "changed": true
+      },
+      "wide": {
+        "structure": true,
+        "changed": true
+      },
+      "analyzed": true,
+      "estimate": {
+        "structure": true,
+        "changed": true,
+        "delta-pt": 0.0
+      }
+    },
+    {
+      "id": "explicit-gap",
+      "basic": {
+        "structure": true,
+        "changed": true
+      },
+      "compact": {
+        "structure": true,
+        "changed": true
+      },
+      "hierarchical": {
+        "structure": true,
+        "changed": false
+      },
+      "adaptive": {
+        "structure": true,
+        "changed": true
+      },
+      "wide": {
+        "structure": true,
+        "changed": true
+      },
+      "analyzed": true,
+      "estimate": {
+        "structure": true,
+        "changed": true,
+        "delta-pt": 0.0
+      }
+    },
+    {
+      "id": "soft-gap",
+      "basic": {
+        "structure": true,
+        "changed": true
+      },
+      "compact": {
+        "structure": true,
+        "changed": true
+      },
+      "hierarchical": {
+        "structure": true,
+        "changed": false
+      },
+      "adaptive": {
+        "structure": true,
+        "changed": true
+      },
+      "wide": {
+        "structure": true,
+        "changed": true
+      },
+      "analyzed": true,
+      "estimate": {
+        "structure": true,
+        "changed": true,
+        "delta-pt": 0.0
+      }
+    },
+    {
+      "id": "opaque",
+      "basic": {
+        "structure": true,
+        "changed": true
+      },
+      "compact": {
+        "structure": true,
+        "changed": true
+      },
+      "hierarchical": {
+        "structure": true,
+        "changed": false
+      },
+      "adaptive": {
+        "structure": true,
+        "changed": true
+      },
+      "wide": {
+        "structure": true,
+        "changed": true
+      },
+      "analyzed": true,
+      "estimate": {
+        "structure": true,
+        "changed": true,
+        "delta-pt": 0.0
+      }
+    },
+    {
+      "id": "wrapped",
+      "basic": {
+        "structure": true,
+        "changed": false
+      },
+      "compact": {
+        "structure": true,
+        "changed": true
+      },
+      "hierarchical": {
+        "structure": true,
+        "changed": false
+      },
+      "adaptive": {
+        "structure": true,
+        "changed": true
+      },
+      "wide": {
+        "structure": true,
+        "changed": true
+      },
+      "analyzed": true,
+      "estimate": {
+        "structure": true,
+        "changed": true,
+        "delta-pt": 0.0
+      }
+    },
+    {
+      "id": "text",
+      "basic": {
+        "structure": true,
+        "changed": false
+      },
+      "compact": {
+        "structure": true,
+        "changed": true
+      },
+      "hierarchical": {
+        "structure": true,
+        "changed": false
+      },
+      "adaptive": {
+        "structure": true,
+        "changed": true
+      },
+      "wide": {
+        "structure": true,
+        "changed": true
+      },
+      "analyzed": true,
+      "estimate": {
+        "structure": true,
+        "changed": true,
+        "delta-pt": 0.0
+      }
+    },
+    {
+      "id": "decimal",
+      "basic": {
+        "structure": true,
+        "changed": true
+      },
+      "compact": {
+        "structure": true,
+        "changed": true
+      },
+      "hierarchical": {
+        "structure": true,
+        "changed": true
+      },
+      "adaptive": {
+        "structure": true,
+        "changed": true
+      },
+      "wide": {
+        "structure": true,
+        "changed": true
+      },
+      "analyzed": true,
+      "estimate": {
+        "structure": true,
+        "changed": true,
+        "delta-pt": 0.0
+      }
+    },
+    {
+      "id": "unknown-glyph",
+      "basic": {
+        "structure": true,
+        "changed": true
+      },
+      "compact": {
+        "structure": true,
+        "changed": true
+      },
+      "hierarchical": {
+        "structure": true,
+        "changed": true
+      },
+      "adaptive": {
+        "structure": true,
+        "changed": true
+      },
+      "wide": {
+        "structure": true,
+        "changed": true
+      },
+      "analyzed": true,
+      "estimate": {
+        "structure": true,
+        "changed": true,
+        "delta-pt": 0.0
+      }
+    },
+    {
+      "id": "custom-class",
+      "basic": {
+        "structure": true,
+        "changed": true
+      },
+      "compact": {
+        "structure": true,
+        "changed": true
+      },
+      "hierarchical": {
+        "structure": true,
+        "changed": true
+      },
+      "adaptive": {
+        "structure": true,
+        "changed": true
+      },
+      "wide": {
+        "structure": true,
+        "changed": true
+      },
+      "analyzed": true,
+      "estimate": {
+        "structure": true,
+        "changed": true,
+        "delta-pt": 0.0
+      }
+    },
+    {
+      "id": "smid",
+      "basic": {
+        "structure": true,
+        "changed": false
+      },
+      "compact": {
+        "structure": true,
+        "changed": true
+      },
+      "hierarchical": {
+        "structure": true,
+        "changed": false
+      },
+      "adaptive": {
+        "structure": true,
+        "changed": true
+      },
+      "wide": {
+        "structure": true,
+        "changed": true
+      },
+      "analyzed": true,
+      "estimate": {
+        "structure": true,
+        "changed": true,
+        "delta-pt": 0.0
+      }
+    },
+    {
+      "id": "equal-branches",
+      "basic": {
+        "structure": true,
+        "changed": true
+      },
+      "compact": {
+        "structure": true,
+        "changed": false
+      },
+      "hierarchical": {
+        "structure": true,
+        "changed": false
+      },
+      "adaptive": {
+        "structure": true,
+        "changed": false
+      },
+      "wide": {
+        "structure": true,
+        "changed": false
+      },
+      "analyzed": true,
+      "estimate": {
+        "structure": true,
+        "changed": false,
+        "delta-pt": 0.0
+      }
+    },
+    {
+      "id": "labelled-gap",
+      "basic": {
+        "structure": true,
+        "changed": true
+      },
+      "compact": {
+        "structure": true,
+        "changed": true
+      },
+      "hierarchical": {
+        "structure": true,
+        "changed": false
+      },
+      "adaptive": {
+        "structure": true,
+        "changed": true
+      },
+      "wide": {
+        "structure": true,
+        "changed": true
+      },
+      "analyzed": true,
+      "estimate": {
+        "structure": true,
+        "changed": true,
+        "delta-pt": 0.0
+      }
+    },
+    {
+      "id": "fraction-style",
+      "basic": {
+        "structure": true,
+        "changed": true
+      },
+      "compact": {
+        "structure": true,
+        "changed": true
+      },
+      "hierarchical": {
+        "structure": true,
+        "changed": false
+      },
+      "adaptive": {
+        "structure": true,
+        "changed": true
+      },
+      "wide": {
+        "structure": true,
+        "changed": true
+      },
+      "analyzed": true,
+      "estimate": {
+        "structure": true,
+        "changed": true,
+        "delta-pt": 0.0
+      }
+    },
+    {
+      "id": "horizontal-native",
+      "basic": {
+        "structure": true,
+        "changed": true
+      },
+      "compact": {
+        "structure": true,
+        "changed": true
+      },
+      "hierarchical": {
+        "structure": true,
+        "changed": false
+      },
+      "adaptive": {
+        "structure": true,
+        "changed": true
+      },
+      "wide": {
+        "structure": true,
+        "changed": true
+      },
+      "analyzed": true,
+      "estimate": {
+        "structure": true,
+        "changed": true,
+        "delta-pt": 0.0
+      }
+    },
+    {
+      "id": "wrapped-fence",
+      "basic": {
+        "structure": true,
+        "changed": true
+      },
+      "compact": {
+        "structure": true,
+        "changed": true
+      },
+      "hierarchical": {
+        "structure": true,
+        "changed": false
+      },
+      "adaptive": {
+        "structure": true,
+        "changed": true
+      },
+      "wide": {
+        "structure": true,
+        "changed": true
+      },
+      "analyzed": true,
+      "estimate": {
+        "structure": true,
+        "changed": true,
+        "delta-pt": 0.0
+      }
+    },
+    {
+      "id": "aside-width",
+      "basic": {
+        "structure": true,
+        "changed": true
+      },
+      "compact": {
+        "structure": true,
+        "changed": true
+      },
+      "hierarchical": {
+        "structure": true,
+        "changed": false
+      },
+      "adaptive": {
+        "structure": true,
+        "changed": true
+      },
+      "wide": {
+        "structure": true,
+        "changed": true
+      },
+      "analyzed": true,
+      "estimate": {
+        "structure": true,
+        "changed": true,
+        "delta-pt": 0.0
+      }
+    },
+    {
+      "id": "attached-sign",
+      "basic": {
+        "structure": true,
+        "changed": false
+      },
+      "compact": {
+        "structure": true,
+        "changed": true
+      },
+      "hierarchical": {
+        "structure": true,
+        "changed": false
+      },
+      "adaptive": {
+        "structure": true,
+        "changed": true
+      },
+      "wide": {
+        "structure": true,
+        "changed": true
+      },
+      "analyzed": true,
+      "estimate": {
+        "structure": true,
+        "changed": true,
+        "delta-pt": 0.0
+      }
+    },
+    {
+      "id": "punctuation-fence",
+      "basic": {
+        "structure": true,
+        "changed": false
+      },
+      "compact": {
+        "structure": true,
+        "changed": true
+      },
+      "hierarchical": {
+        "structure": true,
+        "changed": false
+      },
+      "adaptive": {
+        "structure": true,
+        "changed": true
+      },
+      "wide": {
+        "structure": true,
+        "changed": true
+      },
+      "analyzed": true,
+      "estimate": {
+        "structure": true,
+        "changed": true,
+        "delta-pt": 0.0
+      }
+    },
+    {
+      "id": "fence-space",
+      "basic": {
+        "structure": true,
+        "changed": false
+      },
+      "compact": {
+        "structure": true,
+        "changed": false
+      },
+      "hierarchical": {
+        "structure": true,
+        "changed": false
+      },
+      "adaptive": {
+        "structure": true,
+        "changed": false
+      },
+      "wide": {
+        "structure": true,
+        "changed": false
+      },
+      "analyzed": true,
+      "estimate": {
+        "structure": true,
+        "changed": false,
+        "delta-pt": 0.0
+      }
+    },
+    {
+      "id": "vertical-bar",
+      "basic": {
+        "structure": true,
+        "changed": true
+      },
+      "compact": {
+        "structure": true,
+        "changed": true
+      },
+      "hierarchical": {
+        "structure": true,
+        "changed": false
+      },
+      "adaptive": {
+        "structure": true,
+        "changed": true
+      },
+      "wide": {
+        "structure": true,
+        "changed": true
+      },
+      "analyzed": true,
+      "estimate": {
+        "structure": true,
+        "changed": true,
+        "delta-pt": 0.0
+      }
+    },
+    {
+      "id": "align",
+      "basic": {
+        "structure": true,
+        "changed": true
+      },
+      "compact": {
+        "structure": true,
+        "changed": true
+      },
+      "hierarchical": {
+        "structure": true,
+        "changed": false
+      },
+      "adaptive": {
+        "structure": true,
+        "changed": true
+      },
+      "wide": {
+        "structure": true,
+        "changed": true
+      },
+      "analyzed": true,
+      "estimate": {
+        "structure": true,
+        "changed": true,
+        "delta-pt": 0.0
+      }
+    },
+    {
+      "id": "mat-vec",
+      "basic": {
+        "structure": true,
+        "changed": true
+      },
+      "compact": {
+        "structure": true,
+        "changed": true
+      },
+      "hierarchical": {
+        "structure": true,
+        "changed": false
+      },
+      "adaptive": {
+        "structure": true,
+        "changed": true
+      },
+      "wide": {
+        "structure": true,
+        "changed": true
+      },
+      "analyzed": true,
+      "estimate": {
+        "structure": true,
+        "changed": true,
+        "delta-pt": 0.0
+      }
+    },
+    {
+      "id": "mat-delim",
+      "basic": {
+        "structure": true,
+        "changed": true
+      },
+      "compact": {
+        "structure": true,
+        "changed": true
+      },
+      "hierarchical": {
+        "structure": true,
+        "changed": false
+      },
+      "adaptive": {
+        "structure": true,
+        "changed": true
+      },
+      "wide": {
+        "structure": true,
+        "changed": true
+      },
+      "analyzed": true,
+      "estimate": {
+        "structure": true,
+        "changed": true,
+        "delta-pt": 0.0
+      }
+    },
+    {
+      "id": "dot-product",
+      "basic": {
+        "structure": true,
+        "changed": false
+      },
+      "compact": {
+        "structure": true,
+        "changed": true
+      },
+      "hierarchical": {
+        "structure": true,
+        "changed": false
+      },
+      "adaptive": {
+        "structure": true,
+        "changed": true
+      },
+      "wide": {
+        "structure": true,
+        "changed": true
+      },
+      "analyzed": true,
+      "estimate": {
+        "structure": true,
+        "changed": true,
+        "delta-pt": 0.0
+      }
+    },
+    {
+      "id": "projection",
+      "basic": {
+        "structure": true,
+        "changed": false
+      },
+      "compact": {
+        "structure": true,
+        "changed": true
+      },
+      "hierarchical": {
+        "structure": true,
+        "changed": false
+      },
+      "adaptive": {
+        "structure": true,
+        "changed": true
+      },
+      "wide": {
+        "structure": true,
+        "changed": true
+      },
+      "analyzed": true,
+      "estimate": {
+        "structure": true,
+        "changed": true,
+        "delta-pt": 0.0
+      }
+    },
+    {
+      "id": "gram",
+      "basic": {
+        "structure": true,
+        "changed": true
+      },
+      "compact": {
+        "structure": true,
+        "changed": true
+      },
+      "hierarchical": {
+        "structure": true,
+        "changed": true
+      },
+      "adaptive": {
+        "structure": true,
+        "changed": true
+      },
+      "wide": {
+        "structure": true,
+        "changed": true
+      },
+      "analyzed": true,
+      "estimate": {
+        "structure": true,
+        "changed": true,
+        "delta-pt": 0.0
+      }
+    },
+    {
+      "id": "norm",
+      "basic": {
+        "structure": true,
+        "changed": true
+      },
+      "compact": {
+        "structure": true,
+        "changed": true
+      },
+      "hierarchical": {
+        "structure": true,
+        "changed": true
+      },
+      "adaptive": {
+        "structure": true,
+        "changed": true
+      },
+      "wide": {
+        "structure": true,
+        "changed": true
+      },
+      "analyzed": true,
+      "estimate": {
+        "structure": true,
+        "changed": true,
+        "delta-pt": 0.0
+      }
+    },
+    {
+      "id": "matrix-product",
+      "basic": {
+        "structure": true,
+        "changed": false
+      },
+      "compact": {
+        "structure": true,
+        "changed": true
+      },
+      "hierarchical": {
+        "structure": true,
+        "changed": false
+      },
+      "adaptive": {
+        "structure": true,
+        "changed": true
+      },
+      "wide": {
+        "structure": true,
+        "changed": true
+      },
+      "analyzed": true,
+      "estimate": {
+        "structure": true,
+        "changed": true,
+        "delta-pt": 0.0
+      }
+    },
+    {
+      "id": "attached-fence",
+      "basic": {
+        "structure": true,
+        "changed": true
+      },
+      "compact": {
+        "structure": true,
+        "changed": true
+      },
+      "hierarchical": {
+        "structure": true,
+        "changed": false
+      },
+      "adaptive": {
+        "structure": true,
+        "changed": true
+      },
+      "wide": {
+        "structure": true,
+        "changed": true
+      },
+      "analyzed": true,
+      "estimate": {
+        "structure": true,
+        "changed": true,
+        "delta-pt": 0.0
+      }
+    },
+    {
+      "id": "change-basis",
+      "basic": {
+        "structure": true,
+        "changed": true
+      },
+      "compact": {
+        "structure": true,
+        "changed": true
+      },
+      "hierarchical": {
+        "structure": true,
+        "changed": true
+      },
+      "adaptive": {
+        "structure": true,
+        "changed": true
+      },
+      "wide": {
+        "structure": true,
+        "changed": true
+      },
+      "analyzed": true,
+      "estimate": {
+        "structure": true,
+        "changed": true,
+        "delta-pt": 0.0
+      }
+    },
+    {
+      "id": "linearity",
+      "basic": {
+        "structure": true,
+        "changed": true
+      },
+      "compact": {
+        "structure": true,
+        "changed": true
+      },
+      "hierarchical": {
+        "structure": true,
+        "changed": true
+      },
+      "adaptive": {
+        "structure": true,
+        "changed": true
+      },
+      "wide": {
+        "structure": true,
+        "changed": true
+      },
+      "analyzed": true,
+      "estimate": {
+        "structure": true,
+        "changed": true,
+        "delta-pt": 0.0
+      }
+    },
+    {
+      "id": "adjoint",
+      "basic": {
+        "structure": true,
+        "changed": false
+      },
+      "compact": {
+        "structure": true,
+        "changed": true
+      },
+      "hierarchical": {
+        "structure": true,
+        "changed": false
+      },
+      "adaptive": {
+        "structure": true,
+        "changed": true
+      },
+      "wide": {
+        "structure": true,
+        "changed": true
+      },
+      "analyzed": true,
+      "estimate": {
+        "structure": true,
+        "changed": true,
+        "delta-pt": 0.0
+      }
+    },
+    {
+      "id": "normal-equations",
+      "basic": {
+        "structure": true,
+        "changed": false
+      },
+      "compact": {
+        "structure": true,
+        "changed": true
+      },
+      "hierarchical": {
+        "structure": true,
+        "changed": false
+      },
+      "adaptive": {
+        "structure": true,
+        "changed": true
+      },
+      "wide": {
+        "structure": true,
+        "changed": true
+      },
+      "analyzed": true,
+      "estimate": {
+        "structure": true,
+        "changed": true,
+        "delta-pt": 0.0
+      }
+    },
+    {
+      "id": "spectrum",
+      "basic": {
+        "structure": true,
+        "changed": false
+      },
+      "compact": {
+        "structure": true,
+        "changed": true
+      },
+      "hierarchical": {
+        "structure": true,
+        "changed": true
+      },
+      "adaptive": {
+        "structure": true,
+        "changed": true
+      },
+      "wide": {
+        "structure": true,
+        "changed": true
+      },
+      "analyzed": true,
+      "estimate": {
+        "structure": true,
+        "changed": true,
+        "delta-pt": 0.0
+      }
+    },
+    {
+      "id": "rayleigh",
+      "basic": {
+        "structure": true,
+        "changed": false
+      },
+      "compact": {
+        "structure": true,
+        "changed": true
+      },
+      "hierarchical": {
+        "structure": true,
+        "changed": false
+      },
+      "adaptive": {
+        "structure": true,
+        "changed": true
+      },
+      "wide": {
+        "structure": true,
+        "changed": true
+      },
+      "analyzed": true,
+      "estimate": {
+        "structure": true,
+        "changed": true,
+        "delta-pt": 0.0
+      }
+    },
+    {
+      "id": "rank-nullity",
+      "basic": {
+        "structure": true,
+        "changed": true
+      },
+      "compact": {
+        "structure": true,
+        "changed": true
+      },
+      "hierarchical": {
+        "structure": true,
+        "changed": true
+      },
+      "adaptive": {
+        "structure": true,
+        "changed": true
+      },
+      "wide": {
+        "structure": true,
+        "changed": true
+      },
+      "analyzed": true,
+      "estimate": {
+        "structure": true,
+        "changed": true,
+        "delta-pt": 0.0
+      }
+    },
+    {
+      "id": "determinant",
+      "basic": {
+        "structure": true,
+        "changed": true
+      },
+      "compact": {
+        "structure": true,
+        "changed": true
+      },
+      "hierarchical": {
+        "structure": true,
+        "changed": true
+      },
+      "adaptive": {
+        "structure": true,
+        "changed": true
+      },
+      "wide": {
+        "structure": true,
+        "changed": true
+      },
+      "analyzed": true,
+      "estimate": {
+        "structure": true,
+        "changed": true,
+        "delta-pt": 0.0
+      }
+    },
+    {
+      "id": "piecewise-linear",
+      "basic": {
+        "structure": true,
+        "changed": false
+      },
+      "compact": {
+        "structure": true,
+        "changed": true
+      },
+      "hierarchical": {
+        "structure": true,
+        "changed": false
+      },
+      "adaptive": {
+        "structure": true,
+        "changed": true
+      },
+      "wide": {
+        "structure": true,
+        "changed": true
+      },
+      "analyzed": true,
+      "estimate": {
+        "structure": true,
+        "changed": true,
+        "delta-pt": 0.0
+      }
+    },
+    {
+      "id": "large-trigger",
+      "basic": {
+        "structure": true,
+        "changed": true
+      },
+      "compact": {
+        "structure": true,
+        "changed": true
+      },
+      "hierarchical": {
+        "structure": true,
+        "changed": false
+      },
+      "adaptive": {
+        "structure": true,
+        "changed": true
+      },
+      "wide": {
+        "structure": true,
+        "changed": true
+      },
+      "analyzed": true,
+      "estimate": {
+        "structure": true,
+        "changed": true,
+        "delta-pt": 0.0
+      }
+    },
+    {
+      "id": "derivative",
+      "basic": {
+        "structure": true,
+        "changed": true
+      },
+      "compact": {
+        "structure": true,
+        "changed": true
+      },
+      "hierarchical": {
+        "structure": true,
+        "changed": false
+      },
+      "adaptive": {
+        "structure": true,
+        "changed": true
+      },
+      "wide": {
+        "structure": true,
+        "changed": true
+      },
+      "analyzed": true,
+      "estimate": {
+        "structure": true,
+        "changed": true,
+        "delta-pt": 0.0
+      }
+    },
+    {
+      "id": "continuity",
+      "basic": {
+        "structure": true,
+        "changed": true
+      },
+      "compact": {
+        "structure": true,
+        "changed": true
+      },
+      "hierarchical": {
+        "structure": true,
+        "changed": true
+      },
+      "adaptive": {
+        "structure": true,
+        "changed": true
+      },
+      "wide": {
+        "structure": true,
+        "changed": true
+      },
+      "analyzed": true,
+      "estimate": {
+        "structure": true,
+        "changed": true,
+        "delta-pt": 0.0
+      }
+    },
+    {
+      "id": "triangle",
+      "basic": {
+        "structure": true,
+        "changed": true
+      },
+      "compact": {
+        "structure": true,
+        "changed": true
+      },
+      "hierarchical": {
+        "structure": true,
+        "changed": true
+      },
+      "adaptive": {
+        "structure": true,
+        "changed": true
+      },
+      "wide": {
+        "structure": true,
+        "changed": true
+      },
+      "analyzed": true,
+      "estimate": {
+        "structure": true,
+        "changed": true,
+        "delta-pt": 0.0
+      }
+    },
+    {
+      "id": "uniform",
+      "basic": {
+        "structure": true,
+        "changed": true
+      },
+      "compact": {
+        "structure": true,
+        "changed": true
+      },
+      "hierarchical": {
+        "structure": true,
+        "changed": false
+      },
+      "adaptive": {
+        "structure": true,
+        "changed": true
+      },
+      "wide": {
+        "structure": true,
+        "changed": true
+      },
+      "analyzed": true,
+      "estimate": {
+        "structure": true,
+        "changed": true,
+        "delta-pt": 0.0
+      }
+    },
+    {
+      "id": "bound",
+      "basic": {
+        "structure": true,
+        "changed": true
+      },
+      "compact": {
+        "structure": true,
+        "changed": true
+      },
+      "hierarchical": {
+        "structure": true,
+        "changed": false
+      },
+      "adaptive": {
+        "structure": true,
+        "changed": true
+      },
+      "wide": {
+        "structure": true,
+        "changed": true
+      },
+      "analyzed": true,
+      "estimate": {
+        "structure": true,
+        "changed": true,
+        "delta-pt": 0.0
+      }
+    },
+    {
+      "id": "compactness",
+      "basic": {
+        "structure": true,
+        "changed": false
+      },
+      "compact": {
+        "structure": true,
+        "changed": true
+      },
+      "hierarchical": {
+        "structure": true,
+        "changed": false
+      },
+      "adaptive": {
+        "structure": true,
+        "changed": true
+      },
+      "wide": {
+        "structure": true,
+        "changed": true
+      },
+      "analyzed": true,
+      "estimate": {
+        "structure": true,
+        "changed": true,
+        "delta-pt": 0.0
+      }
+    },
+    {
+      "id": "cauchy",
+      "basic": {
+        "structure": true,
+        "changed": true
+      },
+      "compact": {
+        "structure": true,
+        "changed": true
+      },
+      "hierarchical": {
+        "structure": true,
+        "changed": false
+      },
+      "adaptive": {
+        "structure": true,
+        "changed": true
+      },
+      "wide": {
+        "structure": true,
+        "changed": true
+      },
+      "analyzed": true,
+      "estimate": {
+        "structure": true,
+        "changed": true,
+        "delta-pt": 0.0
+      }
+    },
+    {
+      "id": "median",
+      "basic": {
+        "structure": true,
+        "changed": false
+      },
+      "compact": {
+        "structure": true,
+        "changed": true
+      },
+      "hierarchical": {
+        "structure": true,
+        "changed": false
+      },
+      "adaptive": {
+        "structure": true,
+        "changed": true
+      },
+      "wide": {
+        "structure": true,
+        "changed": true
+      },
+      "analyzed": true,
+      "estimate": {
+        "structure": true,
+        "changed": true,
+        "delta-pt": 0.0
+      }
+    },
+    {
+      "id": "riemann",
+      "basic": {
+        "structure": true,
+        "changed": false
+      },
+      "compact": {
+        "structure": true,
+        "changed": true
+      },
+      "hierarchical": {
+        "structure": true,
+        "changed": false
+      },
+      "adaptive": {
+        "structure": true,
+        "changed": true
+      },
+      "wide": {
+        "structure": true,
+        "changed": true
+      },
+      "analyzed": true,
+      "estimate": {
+        "structure": true,
+        "changed": true,
+        "delta-pt": 0.0
+      }
+    },
+    {
+      "id": "integration-parts",
+      "basic": {
+        "structure": true,
+        "changed": true
+      },
+      "compact": {
+        "structure": true,
+        "changed": true
+      },
+      "hierarchical": {
+        "structure": true,
+        "changed": true
+      },
+      "adaptive": {
+        "structure": true,
+        "changed": true
+      },
+      "wide": {
+        "structure": true,
+        "changed": true
+      },
+      "analyzed": true,
+      "estimate": {
+        "structure": true,
+        "changed": true,
+        "delta-pt": 0.0
+      }
+    },
+    {
+      "id": "geometric",
+      "basic": {
+        "structure": true,
+        "changed": true
+      },
+      "compact": {
+        "structure": true,
+        "changed": true
+      },
+      "hierarchical": {
+        "structure": true,
+        "changed": false
+      },
+      "adaptive": {
+        "structure": true,
+        "changed": true
+      },
+      "wide": {
+        "structure": true,
+        "changed": true
+      },
+      "analyzed": true,
+      "estimate": {
+        "structure": true,
+        "changed": true,
+        "delta-pt": 0.0
+      }
+    },
+    {
+      "id": "alternating",
+      "basic": {
+        "structure": true,
+        "changed": true
+      },
+      "compact": {
+        "structure": true,
+        "changed": true
+      },
+      "hierarchical": {
+        "structure": true,
+        "changed": false
+      },
+      "adaptive": {
+        "structure": true,
+        "changed": true
+      },
+      "wide": {
+        "structure": true,
+        "changed": true
+      },
+      "analyzed": true,
+      "estimate": {
+        "structure": true,
+        "changed": true,
+        "delta-pt": 0.0
+      }
+    },
+    {
+      "id": "bernoulli",
+      "basic": {
+        "structure": true,
+        "changed": true
+      },
+      "compact": {
+        "structure": true,
+        "changed": true
+      },
+      "hierarchical": {
+        "structure": true,
+        "changed": true
+      },
+      "adaptive": {
+        "structure": true,
+        "changed": true
+      },
+      "wide": {
+        "structure": true,
+        "changed": true
+      },
+      "analyzed": true,
+      "estimate": {
+        "structure": true,
+        "changed": true,
+        "delta-pt": 0.0
+      }
+    },
+    {
+      "id": "root",
+      "basic": {
+        "structure": true,
+        "changed": true
+      },
+      "compact": {
+        "structure": true,
+        "changed": true
+      },
+      "hierarchical": {
+        "structure": true,
+        "changed": true
+      },
+      "adaptive": {
+        "structure": true,
+        "changed": true
+      },
+      "wide": {
+        "structure": true,
+        "changed": true
+      },
+      "analyzed": true,
+      "estimate": {
+        "structure": true,
+        "changed": true,
+        "delta-pt": 0.0
+      }
+    },
+    {
+      "id": "convergence",
+      "basic": {
+        "structure": true,
+        "changed": false
+      },
+      "compact": {
+        "structure": true,
+        "changed": true
+      },
+      "hierarchical": {
+        "structure": true,
+        "changed": false
+      },
+      "adaptive": {
+        "structure": true,
+        "changed": true
+      },
+      "wide": {
+        "structure": true,
+        "changed": true
+      },
+      "analyzed": true,
+      "estimate": {
+        "structure": true,
+        "changed": true,
+        "delta-pt": 0.0
+      }
+    },
+    {
+      "id": "taylor",
+      "basic": {
+        "structure": true,
+        "changed": true
+      },
+      "compact": {
+        "structure": true,
+        "changed": true
+      },
+      "hierarchical": {
+        "structure": true,
+        "changed": true
+      },
+      "adaptive": {
+        "structure": true,
+        "changed": true
+      },
+      "wide": {
+        "structure": true,
+        "changed": true
+      },
+      "analyzed": true,
+      "estimate": {
+        "structure": true,
+        "changed": true,
+        "delta-pt": 0.0
+      }
+    },
+    {
+      "id": "difference",
+      "basic": {
+        "structure": true,
+        "changed": true
+      },
+      "compact": {
+        "structure": true,
+        "changed": true
+      },
+      "hierarchical": {
+        "structure": true,
+        "changed": false
+      },
+      "adaptive": {
+        "structure": true,
+        "changed": true
+      },
+      "wide": {
+        "structure": true,
+        "changed": true
+      },
+      "analyzed": true,
+      "estimate": {
+        "structure": true,
+        "changed": true,
+        "delta-pt": 0.0
+      }
+    },
+    {
+      "id": "limits-two",
+      "basic": {
+        "structure": true,
+        "changed": false
+      },
+      "compact": {
+        "structure": true,
+        "changed": true
+      },
+      "hierarchical": {
+        "structure": true,
+        "changed": false
+      },
+      "adaptive": {
+        "structure": true,
+        "changed": true
+      },
+      "wide": {
+        "structure": true,
+        "changed": true
+      },
+      "analyzed": true,
+      "estimate": {
+        "structure": true,
+        "changed": true,
+        "delta-pt": 0.0
+      }
+    },
+    {
+      "id": "open-set",
+      "basic": {
+        "structure": true,
+        "changed": true
+      },
+      "compact": {
+        "structure": true,
+        "changed": true
+      },
+      "hierarchical": {
+        "structure": true,
+        "changed": true
+      },
+      "adaptive": {
+        "structure": true,
+        "changed": true
+      },
+      "wide": {
+        "structure": true,
+        "changed": true
+      },
+      "analyzed": true,
+      "estimate": {
+        "structure": true,
+        "changed": true,
+        "delta-pt": 0.0
+      }
+    },
+    {
+      "id": "accent",
+      "basic": {
+        "structure": true,
+        "changed": true
+      },
+      "compact": {
+        "structure": true,
+        "changed": true
+      },
+      "hierarchical": {
+        "structure": true,
+        "changed": false
+      },
+      "adaptive": {
+        "structure": true,
+        "changed": true
+      },
+      "wide": {
+        "structure": true,
+        "changed": true
+      },
+      "analyzed": true,
+      "estimate": {
+        "structure": true,
+        "changed": true,
+        "delta-pt": 0.0
+      }
+    },
+    {
+      "id": "set-convergence",
+      "basic": {
+        "structure": true,
+        "changed": false
+      },
+      "compact": {
+        "structure": true,
+        "changed": true
+      },
+      "hierarchical": {
+        "structure": true,
+        "changed": true
+      },
+      "adaptive": {
+        "structure": true,
+        "changed": true
+      },
+      "wide": {
+        "structure": true,
+        "changed": true
+      },
+      "analyzed": true,
+      "estimate": {
+        "structure": true,
+        "changed": true,
+        "delta-pt": 0.0
+      }
+    },
+    {
+      "id": "scope-style",
+      "basic": {
+        "structure": true,
+        "changed": true
+      },
+      "compact": {
+        "structure": true,
+        "changed": true
+      },
+      "hierarchical": {
+        "structure": true,
+        "changed": false
+      },
+      "adaptive": {
+        "structure": true,
+        "changed": true
+      },
+      "wide": {
+        "structure": true,
+        "changed": true
+      },
+      "analyzed": true,
+      "estimate": {
+        "structure": true,
+        "changed": true,
+        "delta-pt": 0.0
+      }
+    }
+  ],
+  "samples": [
+    {
+      "count": 100,
+      "unique": false,
+      "profile": "native",
+      "seconds": 0.02242410800045036,
+      "peak_mib": 29.640625
+    },
+    {
+      "count": 100,
+      "unique": false,
+      "profile": "basic",
+      "seconds": 0.055326429000160715,
+      "peak_mib": 36.70703125
+    },
+    {
+      "count": 100,
+      "unique": false,
+      "profile": "compact",
+      "seconds": 0.057070902999839745,
+      "peak_mib": 36.9921875
+    },
+    {
+      "count": 100,
+      "unique": false,
+      "profile": "hierarchical",
+      "seconds": 0.08930302099997789,
+      "peak_mib": 37.03125
+    },
+    {
+      "count": 100,
+      "unique": false,
+      "profile": "adaptive",
+      "seconds": 0.07826694800041878,
+      "peak_mib": 39.34375
+    },
+    {
+      "count": 100,
+      "unique": false,
+      "profile": "wide",
+      "seconds": 0.05624808700031281,
+      "peak_mib": 36.68359375
+    },
+    {
+      "count": 100,
+      "unique": false,
+      "profile": "basic",
+      "seconds": 0.05614033300025767,
+      "peak_mib": 36.8125
+    },
+    {
+      "count": 100,
+      "unique": false,
+      "profile": "compact",
+      "seconds": 0.053387552999993204,
+      "peak_mib": 37.22265625
+    },
+    {
+      "count": 100,
+      "unique": false,
+      "profile": "hierarchical",
+      "seconds": 0.09267988299961871,
+      "peak_mib": 37.33203125
+    },
+    {
+      "count": 100,
+      "unique": false,
+      "profile": "adaptive",
+      "seconds": 0.07871815300040907,
+      "peak_mib": 39.3828125
+    },
+    {
+      "count": 100,
+      "unique": false,
+      "profile": "wide",
+      "seconds": 0.05616835899945727,
+      "peak_mib": 36.58203125
+    },
+    {
+      "count": 100,
+      "unique": false,
+      "profile": "native",
+      "seconds": 0.01674741199985874,
+      "peak_mib": 29.92578125
+    },
+    {
+      "count": 100,
+      "unique": false,
+      "profile": "compact",
+      "seconds": 0.06005077000008896,
+      "peak_mib": 36.75390625
+    },
+    {
+      "count": 100,
+      "unique": false,
+      "profile": "hierarchical",
+      "seconds": 0.0902051319999373,
+      "peak_mib": 37.83984375
+    },
+    {
+      "count": 100,
+      "unique": false,
+      "profile": "adaptive",
+      "seconds": 0.08063103899985435,
+      "peak_mib": 39.2578125
+    },
+    {
+      "count": 100,
+      "unique": false,
+      "profile": "wide",
+      "seconds": 0.05357424399971933,
+      "peak_mib": 37.10546875
+    },
+    {
+      "count": 100,
+      "unique": false,
+      "profile": "native",
+      "seconds": 0.015105991999917023,
+      "peak_mib": 30.0234375
+    },
+    {
+      "count": 100,
+      "unique": false,
+      "profile": "basic",
+      "seconds": 0.0626402819998475,
+      "peak_mib": 36.83984375
+    },
+    {
+      "count": 100,
+      "unique": false,
+      "profile": "hierarchical",
+      "seconds": 0.0929111590003231,
+      "peak_mib": 37.109375
+    },
+    {
+      "count": 100,
+      "unique": false,
+      "profile": "adaptive",
+      "seconds": 0.08004546799929813,
+      "peak_mib": 39.1953125
+    },
+    {
+      "count": 100,
+      "unique": false,
+      "profile": "wide",
+      "seconds": 0.053592561000186834,
+      "peak_mib": 36.83203125
+    },
+    {
+      "count": 100,
+      "unique": false,
+      "profile": "native",
+      "seconds": 0.020186375999401207,
+      "peak_mib": 29.859375
+    },
+    {
+      "count": 100,
+      "unique": false,
+      "profile": "basic",
+      "seconds": 0.06204554600026313,
+      "peak_mib": 36.75
+    },
+    {
+      "count": 100,
+      "unique": false,
+      "profile": "compact",
+      "seconds": 0.06149617400023999,
+      "peak_mib": 36.6328125
+    },
+    {
+      "count": 100,
+      "unique": false,
+      "profile": "adaptive",
+      "seconds": 0.07858051400035038,
+      "peak_mib": 39.34375
+    },
+    {
+      "count": 100,
+      "unique": false,
+      "profile": "wide",
+      "seconds": 0.05837206999967748,
+      "peak_mib": 37.2109375
+    },
+    {
+      "count": 100,
+      "unique": false,
+      "profile": "native",
+      "seconds": 0.014833393000117212,
+      "peak_mib": 29.98828125
+    },
+    {
+      "count": 100,
+      "unique": false,
+      "profile": "basic",
+      "seconds": 0.05378521300008288,
+      "peak_mib": 37.0234375
+    },
+    {
+      "count": 100,
+      "unique": false,
+      "profile": "compact",
+      "seconds": 0.05554456299978483,
+      "peak_mib": 36.9453125
+    },
+    {
+      "count": 100,
+      "unique": false,
+      "profile": "hierarchical",
+      "seconds": 0.08954652099964733,
+      "peak_mib": 37.5390625
+    },
+    {
+      "count": 1000,
+      "unique": false,
+      "profile": "native",
+      "seconds": 0.06950739399962913,
+      "peak_mib": 43.94921875
+    },
+    {
+      "count": 1000,
+      "unique": false,
+      "profile": "basic",
+      "seconds": 0.1520531200003461,
+      "peak_mib": 56.37890625
+    },
+    {
+      "count": 1000,
+      "unique": false,
+      "profile": "compact",
+      "seconds": 0.16497896799955925,
+      "peak_mib": 56.38671875
+    },
+    {
+      "count": 1000,
+      "unique": false,
+      "profile": "hierarchical",
+      "seconds": 0.40853368600073736,
+      "peak_mib": 66.625
+    },
+    {
+      "count": 1000,
+      "unique": false,
+      "profile": "adaptive",
+      "seconds": 0.44392288600010943,
+      "peak_mib": 73.921875
+    },
+    {
+      "count": 1000,
+      "unique": false,
+      "profile": "wide",
+      "seconds": 0.1547699040002044,
+      "peak_mib": 56.84765625
+    },
+    {
+      "count": 1000,
+      "unique": false,
+      "profile": "basic",
+      "seconds": 0.15429545400002098,
+      "peak_mib": 55.81640625
+    },
+    {
+      "count": 1000,
+      "unique": false,
+      "profile": "compact",
+      "seconds": 0.15795897799944214,
+      "peak_mib": 56.44140625
+    },
+    {
+      "count": 1000,
+      "unique": false,
+      "profile": "hierarchical",
+      "seconds": 0.4054862860002686,
+      "peak_mib": 66.56640625
+    },
+    {
+      "count": 1000,
+      "unique": false,
+      "profile": "adaptive",
+      "seconds": 0.43659811799989257,
+      "peak_mib": 73.9609375
+    },
+    {
+      "count": 1000,
+      "unique": false,
+      "profile": "wide",
+      "seconds": 0.1609799269999712,
+      "peak_mib": 57.30078125
+    },
+    {
+      "count": 1000,
+      "unique": false,
+      "profile": "native",
+      "seconds": 0.07182013300007384,
+      "peak_mib": 43.24609375
+    },
+    {
+      "count": 1000,
+      "unique": false,
+      "profile": "compact",
+      "seconds": 0.1546690260001924,
+      "peak_mib": 56.390625
+    },
+    {
+      "count": 1000,
+      "unique": false,
+      "profile": "hierarchical",
+      "seconds": 0.40095963100066,
+      "peak_mib": 66.41015625
+    },
+    {
+      "count": 1000,
+      "unique": false,
+      "profile": "adaptive",
+      "seconds": 0.4308897490000163,
+      "peak_mib": 73.98046875
+    },
+    {
+      "count": 1000,
+      "unique": false,
+      "profile": "wide",
+      "seconds": 0.1534477010000046,
+      "peak_mib": 56.390625
+    },
+    {
+      "count": 1000,
+      "unique": false,
+      "profile": "native",
+      "seconds": 0.07259351999982755,
+      "peak_mib": 44.02734375
+    },
+    {
+      "count": 1000,
+      "unique": false,
+      "profile": "basic",
+      "seconds": 0.15136837099998957,
+      "peak_mib": 56.0859375
+    },
+    {
+      "count": 1000,
+      "unique": false,
+      "profile": "hierarchical",
+      "seconds": 0.40588649900018936,
+      "peak_mib": 65.921875
+    },
+    {
+      "count": 1000,
+      "unique": false,
+      "profile": "adaptive",
+      "seconds": 0.433753999000146,
+      "peak_mib": 74.234375
+    },
+    {
+      "count": 1000,
+      "unique": false,
+      "profile": "wide",
+      "seconds": 0.15810956199948123,
+      "peak_mib": 56.09765625
+    },
+    {
+      "count": 1000,
+      "unique": false,
+      "profile": "native",
+      "seconds": 0.07113478500014025,
+      "peak_mib": 43.515625
+    },
+    {
+      "count": 1000,
+      "unique": false,
+      "profile": "basic",
+      "seconds": 0.15139982599976065,
+      "peak_mib": 55.58984375
+    },
+    {
+      "count": 1000,
+      "unique": false,
+      "profile": "compact",
+      "seconds": 0.16093301000000793,
+      "peak_mib": 56.26953125
+    },
+    {
+      "count": 1000,
+      "unique": false,
+      "profile": "adaptive",
+      "seconds": 0.43164958099987416,
+      "peak_mib": 74.125
+    },
+    {
+      "count": 1000,
+      "unique": false,
+      "profile": "wide",
+      "seconds": 0.1528338950001853,
+      "peak_mib": 56.890625
+    },
+    {
+      "count": 1000,
+      "unique": false,
+      "profile": "native",
+      "seconds": 0.06949344399981783,
+      "peak_mib": 44.0234375
+    },
+    {
+      "count": 1000,
+      "unique": false,
+      "profile": "basic",
+      "seconds": 0.15222217900009127,
+      "peak_mib": 55.90625
+    },
+    {
+      "count": 1000,
+      "unique": false,
+      "profile": "compact",
+      "seconds": 0.15550217899999552,
+      "peak_mib": 56.19140625
+    },
+    {
+      "count": 1000,
+      "unique": false,
+      "profile": "hierarchical",
+      "seconds": 0.4016691919996447,
+      "peak_mib": 65.7421875
+    },
+    {
+      "count": 1000,
+      "unique": true,
+      "profile": "native",
+      "seconds": 0.09377893999953812,
+      "peak_mib": 50.578125
+    },
+    {
+      "count": 1000,
+      "unique": true,
+      "profile": "basic",
+      "seconds": 0.4013188730004913,
+      "peak_mib": 99.19921875
+    },
+    {
+      "count": 1000,
+      "unique": true,
+      "profile": "compact",
+      "seconds": 0.4499001100002715,
+      "peak_mib": 104.65625
+    },
+    {
+      "count": 1000,
+      "unique": true,
+      "profile": "hierarchical",
+      "seconds": 0.7476746910006113,
+      "peak_mib": 102.328125
+    },
+    {
+      "count": 1000,
+      "unique": true,
+      "profile": "adaptive",
+      "seconds": 0.7727422979996845,
+      "peak_mib": 130.87109375
+    },
+    {
+      "count": 1000,
+      "unique": true,
+      "profile": "wide",
+      "seconds": 0.44956771899978776,
+      "peak_mib": 107.3671875
+    },
+    {
+      "count": 1000,
+      "unique": true,
+      "profile": "basic",
+      "seconds": 0.39388626299933094,
+      "peak_mib": 100.62109375
+    },
+    {
+      "count": 1000,
+      "unique": true,
+      "profile": "compact",
+      "seconds": 0.4503778140006034,
+      "peak_mib": 106.703125
+    },
+    {
+      "count": 1000,
+      "unique": true,
+      "profile": "hierarchical",
+      "seconds": 0.7491375119998338,
+      "peak_mib": 103.8125
+    },
+    {
+      "count": 1000,
+      "unique": true,
+      "profile": "adaptive",
+      "seconds": 0.7711113590003151,
+      "peak_mib": 130.57421875
+    },
+    {
+      "count": 1000,
+      "unique": true,
+      "profile": "wide",
+      "seconds": 0.4463857310001913,
+      "peak_mib": 105.41796875
+    },
+    {
+      "count": 1000,
+      "unique": true,
+      "profile": "native",
+      "seconds": 0.08981763599967962,
+      "peak_mib": 50.50390625
+    },
+    {
+      "count": 1000,
+      "unique": true,
+      "profile": "compact",
+      "seconds": 0.45252961200003483,
+      "peak_mib": 106.44140625
+    },
+    {
+      "count": 1000,
+      "unique": true,
+      "profile": "hierarchical",
+      "seconds": 0.7434896379991187,
+      "peak_mib": 107.671875
+    },
+    {
+      "count": 1000,
+      "unique": true,
+      "profile": "adaptive",
+      "seconds": 0.7693496159999995,
+      "peak_mib": 130.734375
+    },
+    {
+      "count": 1000,
+      "unique": true,
+      "profile": "wide",
+      "seconds": 0.4484877429995322,
+      "peak_mib": 106.27734375
+    },
+    {
+      "count": 1000,
+      "unique": true,
+      "profile": "native",
+      "seconds": 0.087844824000058,
+      "peak_mib": 50.3359375
+    },
+    {
+      "count": 1000,
+      "unique": true,
+      "profile": "basic",
+      "seconds": 0.4042667919993619,
+      "peak_mib": 99.265625
+    },
+    {
+      "count": 1000,
+      "unique": true,
+      "profile": "hierarchical",
+      "seconds": 0.759163947000161,
+      "peak_mib": 103.91796875
+    },
+    {
+      "count": 1000,
+      "unique": true,
+      "profile": "adaptive",
+      "seconds": 0.7686444800001482,
+      "peak_mib": 131.53125
+    },
+    {
+      "count": 1000,
+      "unique": true,
+      "profile": "wide",
+      "seconds": 0.44980764200045087,
+      "peak_mib": 106.94921875
+    },
+    {
+      "count": 1000,
+      "unique": true,
+      "profile": "native",
+      "seconds": 0.08936508300030255,
+      "peak_mib": 49.79296875
+    },
+    {
+      "count": 1000,
+      "unique": true,
+      "profile": "basic",
+      "seconds": 0.39412945000003674,
+      "peak_mib": 99.13671875
+    },
+    {
+      "count": 1000,
+      "unique": true,
+      "profile": "compact",
+      "seconds": 0.45029903199974797,
+      "peak_mib": 105.8515625
+    },
+    {
+      "count": 1000,
+      "unique": true,
+      "profile": "adaptive",
+      "seconds": 0.7692231319997518,
+      "peak_mib": 132.1953125
+    },
+    {
+      "count": 1000,
+      "unique": true,
+      "profile": "wide",
+      "seconds": 0.45383314699938637,
+      "peak_mib": 106.80078125
+    },
+    {
+      "count": 1000,
+      "unique": true,
+      "profile": "native",
+      "seconds": 0.0871002479998424,
+      "peak_mib": 49.76171875
+    },
+    {
+      "count": 1000,
+      "unique": true,
+      "profile": "basic",
+      "seconds": 0.39760549000038736,
+      "peak_mib": 100.6796875
+    },
+    {
+      "count": 1000,
+      "unique": true,
+      "profile": "compact",
+      "seconds": 0.454230884000026,
+      "peak_mib": 105.00390625
+    },
+    {
+      "count": 1000,
+      "unique": true,
+      "profile": "hierarchical",
+      "seconds": 0.7408011819998137,
+      "peak_mib": 103.6015625
+    },
+    {
+      "count": 5000,
+      "unique": false,
+      "profile": "native",
+      "seconds": 0.2939540549996309,
+      "peak_mib": 112.078125
+    },
+    {
+      "count": 5000,
+      "unique": false,
+      "profile": "basic",
+      "seconds": 0.5707372080005371,
+      "peak_mib": 142.2265625
+    },
+    {
+      "count": 5000,
+      "unique": false,
+      "profile": "compact",
+      "seconds": 0.5953759499998341,
+      "peak_mib": 148.54296875
+    },
+    {
+      "count": 5000,
+      "unique": false,
+      "profile": "hierarchical",
+      "seconds": 1.7612828020000961,
+      "peak_mib": 193.34765625
+    },
+    {
+      "count": 5000,
+      "unique": false,
+      "profile": "adaptive",
+      "seconds": 1.9735671390008065,
+      "peak_mib": 236.54296875
+    },
+    {
+      "count": 5000,
+      "unique": false,
+      "profile": "wide",
+      "seconds": 0.5780580730006477,
+      "peak_mib": 149.16015625
+    },
+    {
+      "count": 5000,
+      "unique": false,
+      "profile": "basic",
+      "seconds": 0.5671619380000266,
+      "peak_mib": 144.22265625
+    },
+    {
+      "count": 5000,
+      "unique": false,
+      "profile": "compact",
+      "seconds": 0.577382770999975,
+      "peak_mib": 148.19921875
+    },
+    {
+      "count": 5000,
+      "unique": false,
+      "profile": "hierarchical",
+      "seconds": 1.7524846099995557,
+      "peak_mib": 195.4921875
+    },
+    {
+      "count": 5000,
+      "unique": false,
+      "profile": "adaptive",
+      "seconds": 1.967510069999662,
+      "peak_mib": 237.29296875
+    },
+    {
+      "count": 5000,
+      "unique": false,
+      "profile": "wide",
+      "seconds": 0.5798306910000974,
+      "peak_mib": 148.5
+    },
+    {
+      "count": 5000,
+      "unique": false,
+      "profile": "native",
+      "seconds": 0.2924150569997437,
+      "peak_mib": 112.04296875
+    },
+    {
+      "count": 5000,
+      "unique": false,
+      "profile": "compact",
+      "seconds": 0.593236552000235,
+      "peak_mib": 148.53515625
+    },
+    {
+      "count": 5000,
+      "unique": false,
+      "profile": "hierarchical",
+      "seconds": 1.7819679730000644,
+      "peak_mib": 194.71484375
+    },
+    {
+      "count": 5000,
+      "unique": false,
+      "profile": "adaptive",
+      "seconds": 2.010688872999708,
+      "peak_mib": 235.72265625
+    },
+    {
+      "count": 5000,
+      "unique": false,
+      "profile": "wide",
+      "seconds": 0.5962903119998373,
+      "peak_mib": 148.73046875
+    },
+    {
+      "count": 5000,
+      "unique": false,
+      "profile": "native",
+      "seconds": 0.29810067099970183,
+      "peak_mib": 112.0703125
+    },
+    {
+      "count": 5000,
+      "unique": false,
+      "profile": "basic",
+      "seconds": 0.5864526850000402,
+      "peak_mib": 142.02734375
+    },
+    {
+      "count": 5000,
+      "unique": false,
+      "profile": "hierarchical",
+      "seconds": 1.820791344999634,
+      "peak_mib": 192.08203125
+    },
+    {
+      "count": 5000,
+      "unique": false,
+      "profile": "adaptive",
+      "seconds": 2.0182147510004143,
+      "peak_mib": 234.3515625
+    },
+    {
+      "count": 5000,
+      "unique": false,
+      "profile": "wide",
+      "seconds": 0.5827453380006773,
+      "peak_mib": 146.921875
+    },
+    {
+      "count": 5000,
+      "unique": false,
+      "profile": "native",
+      "seconds": 0.29368305600019085,
+      "peak_mib": 111.9375
+    },
+    {
+      "count": 5000,
+      "unique": false,
+      "profile": "basic",
+      "seconds": 0.5655958789993747,
+      "peak_mib": 142.40234375
+    },
+    {
+      "count": 5000,
+      "unique": false,
+      "profile": "compact",
+      "seconds": 0.5791240339995056,
+      "peak_mib": 148.515625
+    },
+    {
+      "count": 5000,
+      "unique": false,
+      "profile": "adaptive",
+      "seconds": 1.973068231999605,
+      "peak_mib": 236.98828125
+    },
+    {
+      "count": 5000,
+      "unique": false,
+      "profile": "wide",
+      "seconds": 0.5788849999999002,
+      "peak_mib": 147.0546875
+    },
+    {
+      "count": 5000,
+      "unique": false,
+      "profile": "native",
+      "seconds": 0.2948834739991071,
+      "peak_mib": 112.2265625
+    },
+    {
+      "count": 5000,
+      "unique": false,
+      "profile": "basic",
+      "seconds": 0.5753686660000312,
+      "peak_mib": 141.83203125
+    },
+    {
+      "count": 5000,
+      "unique": false,
+      "profile": "compact",
+      "seconds": 0.5783890149996296,
+      "peak_mib": 148.4375
+    },
+    {
+      "count": 5000,
+      "unique": false,
+      "profile": "hierarchical",
+      "seconds": 1.7662627839999914,
+      "peak_mib": 195.09375
+    },
+    {
+      "count": 5000,
+      "unique": true,
+      "profile": "native",
+      "seconds": 0.41415374999996857,
+      "peak_mib": 141.46875
+    },
+    {
+      "count": 5000,
+      "unique": true,
+      "profile": "basic",
+      "seconds": 1.8714801000005536,
+      "peak_mib": 376.484375
+    },
+    {
+      "count": 5000,
+      "unique": true,
+      "profile": "compact",
+      "seconds": 2.142451135000556,
+      "peak_mib": 417.8046875
+    },
+    {
+      "count": 5000,
+      "unique": true,
+      "profile": "hierarchical",
+      "seconds": 3.5345595329999924,
+      "peak_mib": 382.46875
+    },
+    {
+      "count": 5000,
+      "unique": true,
+      "profile": "adaptive",
+      "seconds": 3.7508986069997263,
+      "peak_mib": 521.26953125
+    },
+    {
+      "count": 5000,
+      "unique": true,
+      "profile": "wide",
+      "seconds": 2.142148486000224,
+      "peak_mib": 418.96484375
+    },
+    {
+      "count": 5000,
+      "unique": true,
+      "profile": "basic",
+      "seconds": 1.8527623969994238,
+      "peak_mib": 378.31640625
+    },
+    {
+      "count": 5000,
+      "unique": true,
+      "profile": "compact",
+      "seconds": 2.126182420999612,
+      "peak_mib": 417.08203125
+    },
+    {
+      "count": 5000,
+      "unique": true,
+      "profile": "hierarchical",
+      "seconds": 3.5212129640003695,
+      "peak_mib": 380.8984375
+    },
+    {
+      "count": 5000,
+      "unique": true,
+      "profile": "adaptive",
+      "seconds": 3.713939474999279,
+      "peak_mib": 520.71484375
+    },
+    {
+      "count": 5000,
+      "unique": true,
+      "profile": "wide",
+      "seconds": 2.129917862000184,
+      "peak_mib": 420.203125
+    },
+    {
+      "count": 5000,
+      "unique": true,
+      "profile": "native",
+      "seconds": 0.41642357500040816,
+      "peak_mib": 141.515625
+    },
+    {
+      "count": 5000,
+      "unique": true,
+      "profile": "compact",
+      "seconds": 2.1383877270000085,
+      "peak_mib": 419.18359375
+    },
+    {
+      "count": 5000,
+      "unique": true,
+      "profile": "hierarchical",
+      "seconds": 3.53379226800007,
+      "peak_mib": 380.3828125
+    },
+    {
+      "count": 5000,
+      "unique": true,
+      "profile": "adaptive",
+      "seconds": 3.729416379000213,
+      "peak_mib": 521.68359375
+    },
+    {
+      "count": 5000,
+      "unique": true,
+      "profile": "wide",
+      "seconds": 2.15865827899961,
+      "peak_mib": 419.20703125
+    },
+    {
+      "count": 5000,
+      "unique": true,
+      "profile": "native",
+      "seconds": 0.4255470839998452,
+      "peak_mib": 141.5859375
+    },
+    {
+      "count": 5000,
+      "unique": true,
+      "profile": "basic",
+      "seconds": 1.8465172260002873,
+      "peak_mib": 378.18359375
+    },
+    {
+      "count": 5000,
+      "unique": true,
+      "profile": "hierarchical",
+      "seconds": 3.5270221959999617,
+      "peak_mib": 385.90625
+    },
+    {
+      "count": 5000,
+      "unique": true,
+      "profile": "adaptive",
+      "seconds": 3.778946523999366,
+      "peak_mib": 524.1640625
+    },
+    {
+      "count": 5000,
+      "unique": true,
+      "profile": "wide",
+      "seconds": 2.1688688029998957,
+      "peak_mib": 419.4296875
+    },
+    {
+      "count": 5000,
+      "unique": true,
+      "profile": "native",
+      "seconds": 0.41953716300031374,
+      "peak_mib": 141.21484375
+    },
+    {
+      "count": 5000,
+      "unique": true,
+      "profile": "basic",
+      "seconds": 1.837765350999689,
+      "peak_mib": 377.03515625
+    },
+    {
+      "count": 5000,
+      "unique": true,
+      "profile": "compact",
+      "seconds": 2.1391116039994813,
+      "peak_mib": 418.98828125
+    },
+    {
+      "count": 5000,
+      "unique": true,
+      "profile": "adaptive",
+      "seconds": 3.7482169189997876,
+      "peak_mib": 520.33203125
+    },
+    {
+      "count": 5000,
+      "unique": true,
+      "profile": "wide",
+      "seconds": 2.1216077250001035,
+      "peak_mib": 420.21875
+    },
+    {
+      "count": 5000,
+      "unique": true,
+      "profile": "native",
+      "seconds": 0.4267228819999218,
+      "peak_mib": 141.66015625
+    },
+    {
+      "count": 5000,
+      "unique": true,
+      "profile": "basic",
+      "seconds": 1.8788476079998873,
+      "peak_mib": 379.32421875
+    },
+    {
+      "count": 5000,
+      "unique": true,
+      "profile": "compact",
+      "seconds": 2.120770010999877,
+      "peak_mib": 420.140625
+    },
+    {
+      "count": 5000,
+      "unique": true,
+      "profile": "hierarchical",
+      "seconds": 3.522767231999751,
+      "peak_mib": 379.7109375
+    }
+  ],
+  "matched_workload": {
+    "ids": [
+      "literal",
+      "integer",
+      "signs",
+      "adjacent",
+      "nested-sign",
+      "tuple",
+      "identity",
+      "imply",
+      "lone-arrow",
+      "explicit-gap",
+      "decimal",
+      "unknown-glyph",
+      "custom-class",
+      "equal-branches",
+      "labelled-gap",
+      "horizontal-native",
+      "wrapped-fence",
+      "aside-width",
+      "attached-sign",
+      "punctuation-fence",
+      "fence-space",
+      "vertical-bar",
+      "mat-vec",
+      "mat-delim",
+      "dot-product",
+      "projection",
+      "gram",
+      "norm",
+      "matrix-product",
+      "attached-fence",
+      "change-basis",
+      "linearity",
+      "adjoint",
+      "normal-equations",
+      "spectrum",
+      "rank-nullity",
+      "determinant",
+      "large-trigger",
+      "derivative",
+      "continuity",
+      "triangle",
+      "uniform",
+      "bound",
+      "compactness",
+      "cauchy",
+      "median",
+      "geometric",
+      "alternating",
+      "bernoulli",
+      "root",
+      "taylor",
+      "difference",
+      "limits-two",
+      "open-set",
+      "set-convergence",
+      "scope-style"
+    ],
+    "samples": [
+      {
+        "version": "base",
+        "profile": "adaptive",
+        "count": 5000,
+        "unique": false,
+        "seconds": 2.0540192660000685,
+        "peak_mib": 256.65625
+      },
+      {
+        "version": "base",
+        "profile": "hierarchical",
+        "count": 5000,
+        "unique": false,
+        "seconds": 1.815843799000504,
+        "peak_mib": 223.98828125
+      },
+      {
+        "version": "current",
+        "profile": "adaptive",
+        "count": 5000,
+        "unique": false,
+        "seconds": 2.0327640760006034,
+        "peak_mib": 237.87109375
+      },
+      {
+        "version": "current",
+        "profile": "hierarchical",
+        "count": 5000,
+        "unique": false,
+        "seconds": 1.8365245129998584,
+        "peak_mib": 194.26171875
+      },
+      {
+        "version": "current",
+        "profile": "adaptive",
+        "count": 5000,
+        "unique": false,
+        "seconds": 2.0267345359998217,
+        "peak_mib": 237.24609375
+      },
+      {
+        "version": "current",
+        "profile": "hierarchical",
+        "count": 5000,
+        "unique": false,
+        "seconds": 1.8155669679999846,
+        "peak_mib": 195.7578125
+      },
+      {
+        "version": "base",
+        "profile": "adaptive",
+        "count": 5000,
+        "unique": false,
+        "seconds": 2.057461627999146,
+        "peak_mib": 254.71875
+      },
+      {
+        "version": "base",
+        "profile": "hierarchical",
+        "count": 5000,
+        "unique": false,
+        "seconds": 1.812057015999926,
+        "peak_mib": 223.265625
+      },
+      {
+        "version": "base",
+        "profile": "adaptive",
+        "count": 5000,
+        "unique": false,
+        "seconds": 2.0545059799997034,
+        "peak_mib": 256.0390625
+      },
+      {
+        "version": "base",
+        "profile": "hierarchical",
+        "count": 5000,
+        "unique": false,
+        "seconds": 1.8021977190001053,
+        "peak_mib": 223.3515625
+      },
+      {
+        "version": "current",
+        "profile": "adaptive",
+        "count": 5000,
+        "unique": false,
+        "seconds": 2.0342449870004202,
+        "peak_mib": 236.98828125
+      },
+      {
+        "version": "current",
+        "profile": "hierarchical",
+        "count": 5000,
+        "unique": false,
+        "seconds": 1.823490495000442,
+        "peak_mib": 194.26171875
+      }
+    ]
+  }
+}
