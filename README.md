@@ -11,9 +11,9 @@ Ajusta la distancia entre átomos de una ecuación mediante reglas de Typst. La 
 $a + b - c$
 ```
 
-![Doce comparaciones de fórmulas nativas y ajustadas, incluidas una derivada, un sistema lineal y una media ponderada](docs/galeria.svg)
+![Ocho ecuaciones comparadas en los perfiles nativo, compacto, jerárquico, adaptativo y amplio](docs/galeria.svg)
 
-La galería utiliza el punto de entrada real. Contiene las configuraciones completas para la puntuación, los encuentros entre operadores, el factor global condicionado por dos grandes operadores y las jerarquías relativas a los grupos presentes. [Ejemplos compilables](examples/gallery.typ)
+Los cinco perfiles son configuraciones de ejemplo. La galería los aplica a las mismas ocho ecuaciones. El informe incluye la cobertura, la compatibilidad y las medidas de hasta 5.000 ecuaciones. [Galería compilable](examples/gallery.typ) · [Configuraciones](examples/profiles.typ) · [Informe de auditoría](docs/auditoria.md)
 
 ## API
 
@@ -65,9 +65,9 @@ $a => b$  $a = b => c$
 ## Alcance y límites
 
 - El perfil reproduce las reglas de clases de Typst 0.15.1, usa sus constantes `math.thin`, `math.med` y `math.thick`, y tiene en cuenta el tamaño de índices, celdas y fracciones. Es una estimación previa al renderizado. Cuando interviene el espaciado textual de una cerca y la distancia depende de la fuente, el perfil devuelve `auto`. [Algoritmo del compilador](https://github.com/typst/typst/blob/v0.15.1/crates/typst-library/src/math/ir/process.rs#L256-L295)
-- La implementación recorre símbolos, enteros, operadores de texto simples, clases explícitas, delimitadores, raíces, fracciones, matrices, vectores y adjuntos con sus índices y primas. Una estructura opaca, como una caja, un envoltorio de estilo, texto libre, un salto o un punto de alineación, delega **la ecuación completa** a Typst. Así un selector local tampoco alcanza por accidente una copia del contenido dentro de la parte opaca.
+- La implementación recorre símbolos, números, operadores de texto simples, clases explícitas, delimitadores, raíces, fracciones, matrices, vectores y adjuntos con sus índices y primas. Una estructura opaca, como una caja, un envoltorio de estilo, texto libre, un salto o un punto de alineación, delega **la ecuación completa** a Typst. Así un selector local tampoco alcanza por accidente una copia del contenido dentro de la parte opaca.
 - Typst selecciona secuencias por valor. Si numerador y denominador son idénticos, ambos pueden recibir el mismo plan. Pedir distancias distintas para esas dos ramas produce un diagnóstico con sus rutas. Los contenedores se conservan, incluidos los paréntesis que Typst recuerda internamente para fracciones horizontales.
-- Se determina el papel del signo antes de insertar un espacio a su izquierda. Un glifo variable que era binario recibe `math.class("binary", ...)` cuando hace falta conservar ese papel. En un operador variable compuesto que requeriría forzar la clase del conjunto, se delega la frontera. Una regla externa que cambie después la clase, el tamaño matemático o el contenido puede discrepar del análisis. Los estilos externos, las sustituciones independientes y las referencias tienen cobertura de regresión.
+- Se determina el papel del signo antes de insertar un espacio a su izquierda. La frontera entre un delimitador inicial y un signo variable unario se conserva con el espaciado de Typst para preservar su forma en MathML. Un glifo variable que era binario recibe `math.class("binary", ...)` cuando hace falta conservar ese papel. En un operador variable compuesto que requeriría forzar la clase del conjunto, se delega la frontera. Una regla externa que cambie después la clase, el tamaño matemático o el contenido puede discrepar del análisis. Los estilos externos, las sustituciones independientes y las referencias tienen cobertura de regresión.
 
 ## Compilar y verificar
 
