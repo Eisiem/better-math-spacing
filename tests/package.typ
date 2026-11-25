@@ -40,7 +40,7 @@
     near(width($a+b \ c$, groups: signs),
       measure($a#h(4mm)class("binary", +)#h(4mm)b \ c$).width)
   }
-  set math.equation(numbering: "(1)", alt: "Fracción de control")
+  set math.equation(numbering: "(1)", alt: "Control fraction")
   set math.frac(style: "horizontal")
   show math.equation: spacing.with(groups: signs)
   show "+": set text(fill: red)
@@ -49,7 +49,7 @@
   [@control]
   context {
     assert.eq(query(math.equation).len(), 1)
-    assert.eq(query(<control>).first().alt, "Fracción de control")
+    assert.eq(query(<control>).first().alt, "Control fraction")
     assert.eq(counter(math.equation).at(<control>), (1,))
   }
 }

@@ -1,4 +1,4 @@
-"""Regresiones de las sondas. Requiere Python 3 y la CLI de Typst 0.15.1."""
+"""Probe regressions. Requires Python 3 and the Typst 0.15.1 CLI."""
 from html.parser import HTMLParser
 from pathlib import Path
 import json
@@ -11,7 +11,7 @@ ROOT = Path(__file__).resolve().parents[1]
 
 
 class MathPage(HTMLParser):
-    """Lee los fragmentos MathML embebidos en el HTML generado por Typst."""
+    """Read the MathML fragments embedded in Typst’s HTML output."""
 
     def __init__(self, html):
         super().__init__()
@@ -65,7 +65,7 @@ def gallery_edges(formula):
     for parent in formula.iter():
         for index, node in enumerate(parent):
             if node.tag == "mspace":
-                assert 0 < index < len(parent) - 1, "espacio inesperado en un extremo"
+                assert 0 < index < len(parent) - 1, "unexpected space at an edge"
                 pair = atom_text(parent[index - 1]) + atom_text(parent[index + 1])
                 found.append((pair, node.get("width")))
     return found
@@ -87,8 +87,8 @@ def check_gallery(formulas):
     assert len(formulas) == 2 * len(expected)
     for i, edges in enumerate(expected):
         native, edited = formulas[2 * i:2 * i + 2]
-        assert structure(native) == structure(edited), f"estructura, fila {i + 1}"
-        assert gallery_edges(native) == [] and gallery_edges(edited) == edges, f"fronteras, fila {i + 1}"
+        assert structure(native) == structure(edited), f"structure, row {i + 1}"
+        assert gallery_edges(native) == [] and gallery_edges(edited) == edges, f"boundaries, row {i + 1}"
 
 
 def check_scopes(native, changed):
@@ -100,7 +100,7 @@ def check_scopes(native, changed):
     for a, b in zip(native.formulas, changed.formulas):
         assert structure(a) == structure(b)
         assert widths(a) == [] and widths(b) == ["3pt"] * 4
-    # Un selector por valor apuntaba al numerador. Alcanza las DOS ramas.
+    # A value selector aimed at the numerator matches both branches.
     num, denom = collision.find("mfrac")
     assert widths(num) == widths(denom) == ["3pt", "3pt"]
 
@@ -129,7 +129,7 @@ def check():
         for fixture in ("geometry", "structure", "cases", "nested"):
             render(fixture)
         cases = page("cases")
-        assert cases.links == ["#primera", "#segunda"]
+        assert cases.links == ["#first", "#second"]
         assert [widths(eq) for eq in cases.formulas] == [["11.3386pt"] * 2] * 2
         check_gallery(page("gallery").formulas)
         gallery = MathPage(render("gallery", "html", folder="examples"))
@@ -217,16 +217,16 @@ def check():
         c, = broken.formulas
         assert structure(a) == structure(b) and structure(a) != structure(c)
         assert widths(a) == [] and widths(b) == ["11.3386pt"] * 7
-        assert native.links == edited.links == ["#estruct"]
-        assert "𝑞" in "".join(b.itertext())  # regla externa z → q
+        assert native.links == edited.links == ["#structure"]
+        assert "𝑞" in "".join(b.itertext())  # external z → q rule
         for tag in ("mfrac", "mtable", "msubsup"):
             assert b.find(".//" + tag) is not None
         for mode in ("no", "guard"):
             svg = render("interop", "svg", f"spaced={mode}")
-            assert "#0074d9" in svg and "#ff4136" in svg  # dos show-set externos
+            assert "#0074d9" in svg and "#ff4136" in svg  # two external show-set rules
 
 
 if __name__ == "__main__":
     print(subprocess.check_output(["typst", "--version"], text=True).strip())
     check()
-    print("OK · Sondas y paquete 0.1.0: geometría, 40 fórmulas en la galería, MathML, referencias y colisiones.")
+    print("OK · Probes and package 0.1.0 passed geometry, 40 gallery equations, MathML, references and collision checks.")

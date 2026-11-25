@@ -1,7 +1,7 @@
-// Sonda de emisión. En esta fórmula cada + es binario y el único − es prefijo.
+// Emission probe. Each plus sign is binary and the minus sign is a prefix.
 #let glyph = $+$.body.func()
 #let mode = sys.inputs.at("spaced", default: "no")
-#set math.equation(numbering: "(1)", supplement: [Fórmula])
+#set math.equation(numbering: "(1)", supplement: [Equation])
 #show math.frac: set text(fill: blue)
 #show math.equation: set text(fill: red)
 
@@ -16,12 +16,12 @@
   eq
 }
 
-#math.equation(block: true, alt: "Ejercicio de estructura", $frac(x + y,z) = mat(a + b, sum_(i=1)^n;c_(u + v)^(-w), d)$.body) <estruct>
+#math.equation(block: true, alt: "Structure exercise", $frac(x + y,z) = mat(a + b, sum_(i=1)^n;c_(u + v)^(-w), d)$.body) <structure>
 #context {
   let equations = query(math.equation).filter(it => it.block)
   assert.eq(equations.len(), 1)
-  assert.eq(query(<estruct>).len(), 1)
-  assert.eq(counter(math.equation).at(<estruct>), (1,))
-  assert.eq(equations.first().alt, "Ejercicio de estructura")
+  assert.eq(query(<structure>).len(), 1)
+  assert.eq(counter(math.equation).at(<structure>), (1,))
+  assert.eq(equations.first().alt, "Structure exercise")
 }
-Referencia @estruct.
+Reference @structure.

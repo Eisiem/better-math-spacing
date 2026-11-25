@@ -1,4 +1,4 @@
-// Configuraciones experimentales de una misma sonda. Las fórmulas son datos.
+// Experimental configurations for one probe, with equations supplied as data.
 #let signs = ("+", "−")
 #let touches(left, right, chars) = left.ch in chars or right.ch in chars
 
@@ -24,8 +24,8 @@
   let surrounded = range(1, row.len() - 1).any(i =>
     row.at(i).ch == "=" and row.at(i - 1).kind == "large" and row.at(i + 1).kind == "large"
   )
-  // En estas muestras en estilo de texto, este perfil coincide con el espacio
-  // nativo alrededor de relaciones y grandes operadores. Se dobla también ⇒.
+  // In these text-style samples, this profile matches native spacing around
+  // relations and large operators. It also doubles the spacing around ⇒.
   (l, r) => {
     if not surrounded { return auto }
     let width = if l.kind == "relation" or r.kind == "relation" { 5em / 18 }
@@ -36,12 +36,12 @@
 }
 
 #let samples = (
-  (name: "Signos a 4 mm por lado", eq: $a + b - c$, policy: four-mm),
-  (name: "Operadores consecutivos", eq: $a + -b$, policy: pair),
-  (name: "Condición ausente", eq: $a = product_j^m x => y$, policy: doubled),
-  (name: "Condición entre dos grandes", eq: $sum_i^n = product_j^m x => y$, policy: doubled),
-  (name: "Implicación sola", eq: $a => b$, policy: hierarchy),
-  (name: "Implicación con igualdad", eq: $a = b => c$, policy: hierarchy),
-  (name: "Dos términos separados por coma", eq: $(a + b, c + d)$, policy: punctuation),
-  (name: "Signo prefijo y resta binaria", eq: $-a - b$, policy: roles),
+  (name: "Signs with 4 mm on each side", eq: $a + b - c$, policy: four-mm),
+  (name: "Adjacent operators", eq: $a + -b$, policy: pair),
+  (name: "Condition absent", eq: $a = product_j^m x => y$, policy: doubled),
+  (name: "Condition between two large operators", eq: $sum_i^n = product_j^m x => y$, policy: doubled),
+  (name: "Implication alone", eq: $a => b$, policy: hierarchy),
+  (name: "Implication with equality", eq: $a = b => c$, policy: hierarchy),
+  (name: "Two terms separated by a comma", eq: $(a + b, c + d)$, policy: punctuation),
+  (name: "Prefix sign and binary subtraction", eq: $-a - b$, policy: roles),
 )

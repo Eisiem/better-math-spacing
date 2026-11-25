@@ -1,7 +1,7 @@
-// ¿Puede una condición exterior y una misma transformación alcanzar dos niveles?
+// Can one outer condition and transformation reach two nesting levels?
 #import "edges.typ": sequence, space-node, glyph, describe
 #set text(size: 12pt)
-// Sólo se prueban el arbitraje inicial y la composición después del filtrado.
+// Test initial precedence and composition after filtering.
 #let transform(after, before, rules) = {
   let initial = if before != none { before } else if after != none { after } else { auto }
   rules.fold(initial, (w, r) => {
@@ -20,7 +20,7 @@
 #let enabled = sys.inputs.at("spaced", default: "no") == "yes"
 #let nested(eq) = {
   let cells = eq.body.children.filter(it => it.func() != space-node)
-  // En estas dos muestras el cuarto átomo es siempre un grupo delimitado.
+  // The fourth atom is a delimited group in both samples.
   let prefix = cells.slice(0, 3).map(it => describe(it, none))
   if prefix.map(it => it.kind) != ("large", "relation", "large") { return eq }
   let rules = (twice,)
@@ -38,7 +38,7 @@
 #let negative = $a = product_j^m (a+b)$
 #context {
   let changed = { show math.equation: nested; formula }
-  // En texto, dos huecos de relación y dos de binario suman exactamente 1 em.
+  // In text style, two relation gaps and two binary gaps total exactly 1 em.
   assert(calc.abs(measure(changed).width - measure(formula).width - 12pt) < 0.001pt)
   assert.eq(nested(negative), negative)
 }

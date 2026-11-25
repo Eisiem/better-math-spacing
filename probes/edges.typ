@@ -1,5 +1,5 @@
-// Sonda de adyacencia, restringida a una lista plana o al interior de un lr.
-// «policy» recibe la lista original una vez y devuelve una función por frontera.
+// Adjacency probe for a flat sequence or the body of an lr element.
+// The policy receives the original run once and returns a function for each boundary.
 #let sequence = $a+b$.body.func()
 #let glyph = $+$.body.func()
 #let space-node = [ ].func()

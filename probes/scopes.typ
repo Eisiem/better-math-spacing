@@ -1,4 +1,4 @@
-// Dos árboles con los mismos campos públicos, renderizados en horizontal.
+// Two trees with the same public fields, rendered horizontally.
 #let slash = $(a+b)/(c-d)$
 #let call = $frac(a+b,c-d)$
 #assert.eq(slash.body, call.body)
@@ -12,7 +12,7 @@
 #show math.equation: eq => {
   if mode == "original" { return eq }
   let f = eq.body
-  // El selector del numerador alcanza también el denominador si son iguales.
+  // The numerator selector also matches an equal denominator.
   if f.num == f.denom {
     show seq.where(children: f.num.children): widen
     eq

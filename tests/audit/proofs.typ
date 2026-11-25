@@ -4,35 +4,36 @@
 
 #let profile = sys.inputs.at("profile", default: "native")
 #show math.equation: spacing.with(..profiles.at(profile))
-#set text(lang: "es")
+#set text(lang: "en")
 #set math.equation(numbering: "(1)")
-= Ortogonalización de Gram–Schmidt
 
-Sea $(v_1, dots, v_n)$ una familia linealmente independiente en un espacio
-euclídeo real. Tomamos $u_1 = v_1$. Si los vectores construidos hasta
-$k-1$ son ortogonales, definimos
+= Gram–Schmidt orthogonalization
+
+Let $(v_1, dots, v_n)$ be a linearly independent family in a real Euclidean
+space. Set $u_1 = v_1$. If the vectors constructed through $k-1$ are
+orthogonal, define
 #math.equation(corpus.gram.body, block: true) <gram>
 
-Para $i<k$, la linealidad y la hipótesis inductiva dan
+For $i<k$, linearity and the induction hypothesis give
 $ chevron.l u_k,u_i chevron.r
   = chevron.l v_k,u_i chevron.r -
     (chevron.l v_k,u_i chevron.r / chevron.l u_i,u_i chevron.r)
     chevron.l u_i,u_i chevron.r = 0. $
-Todos los denominadores de @gram son positivos. Si $u_k = 0$, @gram
-expresa $v_k$ como combinación lineal de los anteriores, lo que contradice
-la independencia. Además, @gram implica por inducción
+All denominators in @gram are positive. If $u_k = 0$, @gram expresses
+$v_k$ as a linear combination of the preceding vectors, contradicting
+linear independence. By induction, @gram also gives
 $ op("span")(u_1, dots, u_k) = op("span")(v_1, dots, v_k). $
-Dividir cada vector por su norma produce una base ortonormal del mismo subespacio.
+Dividing each vector by its norm yields an orthonormal basis of the same subspace.
 
-= Convergencia uniforme e integración
+= Uniform convergence and integration
 
-Sean $f_n$ y $f$ funciones continuas en $[a,b]$, con $a<b$. Supongamos que
-$f_n$ converge uniformemente a $f$. Definimos
+Let $f_n$ and $f$ be continuous on $[a,b]$, with $a<b$. Suppose $f_n$ converges
+uniformly to $f$. Define
 $ M_n = sup_(x in [a,b]) abs(f_n(x)-f(x)), quad M_n -> 0. $
-Por la desigualdad triangular y la monotonía de la integral,
+By the triangle inequality and monotonicity of the integral,
 $ abs(integral_a^b f_n(x) dif x - integral_a^b f(x) dif x)
    <= integral_a^b abs(f_n(x)-f(x)) dif x <= (b-a) M_n. $ <bound>
-Dado $epsilon>0$, existe un índice a partir del cual
-$M_n < epsilon/(b-a)$. Entonces @bound acota la diferencia de las integrales
-por $epsilon$, y concluimos
+Given $epsilon>0$, there is an index beyond which
+$M_n < epsilon/(b-a)$. Then @bound bounds the difference of the integrals
+by $epsilon$, so
 $ lim_(n -> oo) integral_a^b f_n(x) dif x = integral_a^b f(x) dif x. $

@@ -8,4 +8,4 @@
 - Scope nested edits to individual siblings so equal subexpressions in separate compounds can receive different spacing.
 - Include five comparison profiles, a local package installer, and automated regression tests.
 
-Verified with Typst 0.15.1. See the [known limitations](README.md#known-limitations) and [audit results](docs/revision.md).
+Verified with Typst 0.15.1. See the [known limitations](README.md#known-limitations) and [audit results](docs/review.md).

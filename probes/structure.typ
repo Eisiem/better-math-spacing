@@ -1,5 +1,5 @@
-// Sonda para Typst 0.15.1. Inserta o retira una marca conocida en una
-// muestra cerrada. Las fórmulas de esta sonda no contienen h(3pt) de autor.
+// Typst 0.15.1 probe that inserts or removes a known marker in a fixed fixture.
+// The original equations contain no author-supplied h(3pt).
 #let seq = $x+y$.body.func()
 #let sign = $+$.body
 #let mark = h(3pt)

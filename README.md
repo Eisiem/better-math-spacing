@@ -108,6 +108,6 @@ mkdir -p build
 typst compile --root . --ignore-system-fonts examples/gallery.typ build/gallery.pdf
 ```
 
-The suite covers rendered geometry, MathML, equation references, style interactions and scope collisions. The research reports and raw measurements are retained in Spanish. [Design notes](docs/diseno.md) · [Original audit](docs/auditoria.md) · [Comparative audit](docs/revision.md) · [Changelog](CHANGELOG.md)
+The suite covers rendered geometry, MathML, equation references, style interactions and scope collisions. The technical reports include the original measurements. [Design notes](docs/design.md) · [Original audit](docs/audit.md) · [Comparative audit](docs/review.md) · [Changelog](CHANGELOG.md)
 
 The package is MIT-licensed. [License](LICENSE) · [Third-party data notices](NOTICE)
