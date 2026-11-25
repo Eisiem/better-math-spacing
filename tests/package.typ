@@ -29,9 +29,16 @@
     near(width($a #h(3pt) + b$, groups: signs), measure($a #h(3pt) + #h(4mm) b$).width)
     let kinds = (compound: group(math.frac, math.mat, after: 5pt),)
     near(width($frac(a,b)x$, groups: kinds), measure($frac(a,b)#h(5pt)x$).width)
-    for eq in ($a #box[?] + b$, $a &+ b$, $a + b \ c$) {
+    // No editable boundary beside an unknown atom, or across a marker.
+    for eq in ($a #box[?] + b$, $a &+ #box[?]$) {
       assert.eq(spacing(eq, groups: signs), eq)
     }
+    for eq in ($#box[?] #box[!]$, $mid(|)$, $frac(a+b, #box[$a+b$])$) {
+      assert.eq(spacing(eq, rules: _ => panic("opaque scope leaked")), eq)
+    }
+    near(width($a &+ b$, groups: signs), measure($a &+ #h(4mm)b$).width)
+    near(width($a+b \ c$, groups: signs),
+      measure($a#h(4mm)class("binary", +)#h(4mm)b \ c$).width)
   }
   set math.equation(numbering: "(1)", alt: "Fracción de control")
   set math.frac(style: "horizontal")

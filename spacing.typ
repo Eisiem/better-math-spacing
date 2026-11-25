@@ -1,6 +1,7 @@
 #let seq = $a+b$.body.func()
 #let glyph = $a$.body.func()
 #let blank = [ ].func()
+#let align-point = $&$.body.func()
 #let classes = json("math-classes.json")
 #let class-by-glyph = {
   let lookup = (:)
@@ -44,8 +45,8 @@
   none
 }
 
-#let atom(n, index, previous, groups) = {
-  let c = base-class(n)
+#let atom(n, index, c, previous, groups) = {
+  let kind = n.func()
   let role = if c == "vary" {
     if previous in ("normal", "alphabetic", "closing", "fence") { "binary" } else { "unary" }
   } else if c in ("binary", "unary") { c }
@@ -54,10 +55,13 @@
   let before = none
   let after = none
   for (name, g) in groups {
-    let matches = g.members.len() == 0 or g.members.any(m => {
-      if type(m) == symbol { n.func() == glyph and n.text == str(m) }
-      else { m == c or m == n.func() }
-    })
+    let matches = g.members == ()
+    for m in g.members {
+      if m == c or m == kind or (kind == glyph and type(m) == symbol and n.text == str(m)) {
+        matches = true
+        break
+      }
+    }
     if matches and (g.test == none or (g.test)(a)) {
       names.push(name)
       if g.before != none { before = g.before }
@@ -67,7 +71,7 @@
   let face = if role == "binary" { "binary" } else { c }
   let l = face
   let r = face
-  if n.func() == math.lr {
+  if kind == math.lr {
     let body = n.body
     if body.func() != seq or body.children.len() == 0 {
       l = none
@@ -77,8 +81,8 @@
       if base-class(kids.first()) in delimiters { l = "opening" }
       if base-class(kids.last()) in delimiters { r = "closing" }
     }
-  } else if n.func() in (math.mat, math.vec) {
-    let delimiters = n.at("delim", default: if n.func() == math.mat { math.mat.delim } else { math.vec.delim })
+  } else if kind in (math.mat, math.vec) {
+    let delimiters = n.at("delim", default: if kind == math.mat { math.mat.delim } else { math.vec.delim })
     if delimiters.first() != none { l = "opening" }
     if delimiters.last() != none { r = "closing" }
   }
@@ -90,45 +94,63 @@
 #let flatten(kids) = {
   let flat = ()
   let reserved = ()
-  for kid in kids {
-    if kid.func() == seq {
-      if kid.has("label") { return none }
-      let nested = flatten(kid.children)
-      if nested == none { return none }
-      flat += nested.flat
-      reserved += (kid,) + nested.reserved
-    } else { flat.push(kid) }
+  let start = 0
+  for (i, kid) in kids.enumerate() {
+    if kid.func() != seq { continue }
+    if kid.has("label") { return none }
+    let nested = flatten(kid.children)
+    if nested == none { return none }
+    flat += kids.slice(start, i) + nested.flat
+    reserved += (kid,) + nested.reserved
+    start = i + 1
   }
-  (flat: flat, reserved: reserved)
+  (flat: if start == 0 { kids } else { flat + kids.slice(start) }, reserved: reserved)
 }
 
 // Collect all selectable lists, including occurrences with an empty edit plan.
-// An opaque subtree might contain an equal sequence, so abstain for that equation.
-#let collect(n, path, size, groups, singleton: true) = {
+// The outer sequence can isolate each compound child in its own show scope.
+#let collect(n, path, size, groups, context-needed, singleton: true) = {
   let f = n.func()
   let lists = ()
-  let descend(child, field, level, ..position) = collect(child,
-    path + ((parent: f, field: field, ..position.named()),), level, groups,
-    singleton: f != seq)
   if f == seq {
     let runs = ()
     let run = ()
     let fenced = path.len() > 0 and path.last().parent == math.lr
     let flattened = flatten(n.children)
     if flattened == none { return none }
-    for child in flattened.reserved {
-      lists.push((node: child, path: path + ("nested sequence",), size: size, runs: ()))
+    if path != () {
+      for child in flattened.reserved {
+        lists.push((node: child, path: path + ("nested sequence",), size: size, runs: ()))
+      }
     }
+    let previous = none
     for (i, child) in flattened.flat.enumerate() {
-      if child.func() == blank { continue }
-      if child.func() == h {
-        if type(child.amount) != length { return none }
-        if run.len() > 0 { runs.push(run) }
-        run = ()
+      let kind = child.func()
+      if kind == blank { continue }
+      let c = base-class(child)
+      // Leaves cannot contain a sequence matched by a sibling's recipe.
+      // In a deeper compound, abandon the branch if an opaque node could.
+      if kind not in (glyph, text, math.primes, h, linebreak, align-point) {
+        let nested = collect(child, path + ((parent: f, field: "children", index: i),), size,
+          groups, context-needed, singleton: false)
+        if nested == none {
+          if path != () { return none }
+          c = none
+        } else { lists += nested }
+      }
+      if c == none or (previous == auto and c == "vary") {
+        if run.len() > 0 { runs.push(run); run = () }
+        // Alignment and a nonzero percentage gap are invisible to the
+        // native role resolver. A top-level row break starts a new row.
+        if kind == align-point or (kind == h and type(child.amount) == ratio and child.amount != 0%) {
+          continue
+        }
+        previous = if (kind == h and type(child.amount) == length) or (kind == linebreak and path == ()) {
+          none
+        } else if c == "vary" { c } else { auto }
         continue
       }
-      let prev = if run.len() > 0 { run.last().class }
-      let a = atom(child, i, prev, groups)
+      let a = atom(child, i, c, previous, groups)
       // Typst treats a delimiter at the start of lr as opening even if its
       // glyph is normally closing (e.g. a reversed bracket).
       if fenced and a.class in delimiters {
@@ -140,15 +162,20 @@
         }
       }
       run.push(a)
-      let nested = descend(child, "children", size, index: i)
-      if nested == none { return none }
-      lists += nested
+      previous = a.class
     }
     if run.len() > 0 { runs.push(run) }
+    // An entirely inaccessible root keeps the original delegation contract.
+    if path == () and runs == () and flattened.flat.any(k =>
+      k.func() != blank and (k.func() != h or type(k.amount) != length)) { return none }
     return ((node: n, path: path, size: size, runs: runs),) + lists
   }
-  if singleton {
-    lists.push((node: n, path: path, size: size, runs: ((atom(n, 0, none, groups),),)))
+  let c = base-class(n)
+  if singleton and context-needed and c != none {
+    lists.push((node: n, path: path, size: size, runs: ((atom(n, 0, c, none, groups),),)))
+  }
+  if f in (glyph, text, math.primes) {
+    return if c == none and path == () { none } else { lists }
   }
   let slots = ()
   if f in (math.mat, math.vec) {
@@ -156,7 +183,8 @@
     for (row, cells) in rows.enumerate() {
       for (col, cell) in cells.enumerate() {
         let field = if f == math.mat { "rows" } else { "children" }
-        let nested = descend(cell, field, calc.min(size + 1, 2), row: row, col: col)
+        let nested = collect(cell, path + ((parent: f, field: field, row: row, col: col),),
+          calc.min(size + 1, 2), groups, context-needed)
         if nested == none { return none }
         lists += nested
       }
@@ -165,9 +193,10 @@
   else if f == math.frac { slots = ("num", "denom") }
   else if f == math.root { slots = ("radicand", "index") }
   else if f in (math.lr, math.class) { slots = ("body",) }
+  else if f == math.mid and n.body.func() == glyph { return if path == () { none } else { () } }
   else if f == math.op and n.text.func() == text { /* Atomic text operator. */ }
-  else if f not in (glyph, text, math.primes) { return none }
-  if f in (glyph, text, math.attach) and base-class(n) == none { return none }
+  else { return none }
+  if f == math.attach and c == none { return none }
   for field in slots {
     let child = n.at(field, default: none)
     if type(child) != content { continue }
@@ -177,7 +206,7 @@
       level = if n.at("style", default: math.frac.style) == "horizontal" { size }
         else { calc.min(size + 1, 2) }
     }
-    let nested = descend(child, field, level)
+    let nested = collect(child, path + ((parent: f, field: field),), level, groups, context-needed)
     if nested == none { return none }
     lists += nested
   }
@@ -204,15 +233,20 @@
       let (l, r) = pair
       let width = if r.before != none { r.before } else if l.after != none { l.after } else { auto }
       if width == auto and rules.len() == 0 { continue }
-      let base = native(l.r, r.l, list.size >= 2)
-      let edge = (left: l, right: r, index: i, path: list.path, run: run, equation: equation,
-        left-class: l.r, right-class: r.l, left-after: l.after, right-before: r.before, native: base)
+      let base = if rules != () { native(l.r, r.l, list.size >= 2) }
+      let edge = if equation != none {
+        (left: l, right: r, index: i, path: list.path, run: run, equation: equation,
+          left-class: l.r, right-class: r.l, left-after: l.after, right-before: r.before, native: base)
+      }
       for spec in rules {
         if spec.left != none and spec.left not in l.groups { continue }
         if spec.right != none and spec.right not in r.groups { continue }
-        edge.width = width
-        if spec.when != none and not (spec.when)(edge) { continue }
-        let value = if type(spec.value) == function { (spec.value)(edge) } else { spec.value }
+        let value = spec.value
+        if spec.when != none or type(value) == function {
+          edge.width = width
+          if spec.when != none and not (spec.when)(edge) { continue }
+          if type(value) == function { value = value(edge) }
+        }
         if type(value) == ratio {
           let basis = if width == auto { base } else { width }
           if basis != auto and value != 100% and (width != auto or basis != 0pt) {
@@ -236,57 +270,87 @@
   result
 }
 
+// Changes follow the original indices in increasing order. Copy the intervening
+// slices intact, including any opaque children or layout markers.
 #let emit(kids, changes) = {
+  if changes == (:) { return kids }
   let out = ()
-  for (i, child) in flatten(kids).flat.enumerate() {
-    let change = changes.at(str(i), default: none)
-    if change != none {
-      out.push(h(change.first(), weak: false))
-      if change.last() { child = math.class("binary", child) }
-    }
-    out.push(child)
+  let start = 0
+  for (key, change) in changes {
+    let i = int(key)
+    out += kids.slice(start, i)
+    out.push(h(change.first(), weak: false))
+    out.push(if change.last() { math.class("binary", kids.at(i)) } else { kids.at(i) })
+    start = i + 1
   }
-  out
+  out + kids.slice(start)
+}
+
+// The local selectors use the realized occurrence, including its private fields.
+#let apply-plans(node, plans) = {
+  let selectors = plans.map(p => seq.where(children: p.kids))
+  show selectors.first().or(..selectors.slice(1)): it => {
+    let plan = plans.find(p => it.children == p.kids)
+    emit(flatten(it.children).flat, plan.changes).join()
+  }
+  node
 }
 
 #let spacing(eq, groups: (:), rules: ()) = {
   if groups == (:) and rules == () { return eq }
-  let lists = collect(eq.body, (), if eq.block { 0 } else { 1 }, groups)
+  let contextual = type(rules) == function or rules.any(s => s.when != none or type(s.value) == function)
+  let lists = collect(eq.body, (), if eq.block { 0 } else { 1 }, groups, contextual)
   if lists == none { return eq }
-  let equation = (node: eq, runs: lists.map(it => it.runs).join(default: ()))
+  let equation = if contextual { (node: eq, runs: lists.map(it => it.runs).join(default: ())) }
   if type(rules) == function { rules = rules(equation) }
   for spec in rules {
     for name in (spec.left, spec.right) {
       assert(name == none or name in groups, message: "Unknown spacing group: " + repr(name))
     }
   }
-  let plans = ()
-  for list in lists.filter(it => it.node.func() == seq) {
+  let outer = eq.body.func() == seq
+  let root-edits = (:)
+  let scopes = (:)
+  for list in lists {
+    if list.node.func() != seq { continue }
     let changes = edits(list, equation, rules)
+    if outer and list.path == () { root-edits = changes; continue }
+    let key = if outer { str(list.path.first().index) } else { "body" }
+    let plans = scopes.at(key, default: ())
     let kids = list.node.children
     let prior = plans.find(p => p.kids == kids)
     if prior == none {
       plans.push((kids: kids, changes: changes, path: list.path))
+      scopes.insert(key, plans)
     } else {
       assert(prior.changes == changes, message: "Conflicting spacing for equal sequences at "
         + repr(prior.path) + " and " + repr(list.path))
     }
   }
-  plans = plans.filter(p => p.changes.len() > 0)
-  if plans.len() == 0 { return eq }
-  // A replacement must not match another active selector (e.g. an author
-  // used exactly the same explicit h in a second branch).
-  if plans.len() > 1 {
-    for p in plans {
-      let output = emit(p.kids, p.changes)
-      assert(not plans.any(other => output == other.kids),
-        message: "Spacing replacement matches another active sequence at " + repr(p.path))
+  for (key, plans) in scopes {
+    let active = plans.filter(p => p.changes != (:))
+    if active == () { let _ = scopes.remove(key); continue }
+    if active.len() > 1 {
+      for p in active {
+        let output = emit(flatten(p.kids).flat, p.changes)
+        assert(not active.any(other => output == other.kids),
+          message: "Spacing replacement matches another active sequence at " + repr(p.path))
+      }
     }
+    scopes.insert(key, active)
   }
-  let selectors = plans.map(p => seq.where(children: p.kids))
-  show selectors.first().or(..selectors.slice(1)): it => {
-    let p = plans.find(p => it.children == p.kids)
-    emit(it.children, p.changes).join()
+  if root-edits == (:) and scopes == (:) { return eq }
+  if outer {
+    show seq.where(children: eq.body.children): it => {
+      let kids = flatten(it.children).flat
+      for (key, plans) in scopes {
+        let i = int(key)
+        kids.at(i) = apply-plans(kids.at(i), plans)
+      }
+      emit(kids, root-edits).join()
+    }
+    eq
+  } else {
+    apply-plans(eq, scopes.body)
   }
-  eq
 }

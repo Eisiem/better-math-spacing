@@ -170,6 +170,20 @@ def check():
                 structure(n) for n in proofs_native.formulas
             ]
 
+        native_scopes = MathPage(render("scopes", "html", folder="tests/audit")).formulas
+        edited_scopes = MathPage(render("scopes", "html", "profile=scoped", folder="tests/audit")).formulas
+        assert [structure(f) for f in native_scopes] == [structure(f) for f in edited_scopes]
+        assert [widths(f) for f in edited_scopes] == [
+            ["4pt", "7pt", "3pt", "4pt"], ["4pt"], ["3pt", "4pt"] * 2,
+            ["3pt", "4pt", *widths(native_scopes[3]), "3pt", "4pt"],
+            ["3pt", "4pt"] * 2, ["3pt", "4pt"], ["2pt", "2pt", "7pt", "7pt"],
+        ]
+        assert [widths(cell) for cell in edited_scopes[0].iter("mtd")] == [
+            [], ["4pt"], ["7pt", "3pt", "4pt"], [],
+        ]
+        assert widths(edited_scopes[2].find(".//math")) == []
+        assert widths(edited_scopes[5].find(".//mfrac")) == ["3pt", "4pt"]
+
         assert "#ff4136" in render("package", folder="tests")
         packaged = MathPage(render("package", "html", folder="tests"))
         formula, = packaged.formulas
