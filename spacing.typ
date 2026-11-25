@@ -26,7 +26,7 @@
   let f = n.func()
   if f == glyph {
     let ch = n.text
-    if ch.clusters().len() != 1 { return none }
+    if ch.codepoints().len() != 1 { return none }
     let hit = classes.pairs().find(pair => pair.last().contains(ch))
     return if hit != none { hit.first() }
   }
@@ -63,7 +63,10 @@
   let r = face
   if n.func() == math.lr {
     let body = n.body
-    if body.func() != seq { l = none; r = none } else {
+    if body.func() != seq or body.children.len() == 0 {
+      l = none
+      r = none
+    } else {
       let kids = body.children
       if base-class(kids.first()) in ("opening", "fence") { l = "opening" }
       if base-class(kids.last()) in ("closing", "fence") { r = "closing" }
@@ -143,7 +146,8 @@
     let rows = if f == math.mat { n.rows } else { n.children.map(x => (x,)) }
     for (row, cells) in rows.enumerate() {
       for (col, cell) in cells.enumerate() {
-        let nested = descend(cell, "rows", calc.min(size + 1, 2), row: row, col: col)
+        let field = if f == math.mat { "rows" } else { "children" }
+        let nested = descend(cell, field, calc.min(size + 1, 2), row: row, col: col)
         if nested == none { return none }
         lists += nested
       }

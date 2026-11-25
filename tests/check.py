@@ -65,7 +65,7 @@ def gallery_edges(formula):
     return found
 
 
-def check_gallery(page):
+def check_gallery(formulas):
     expected = [
         [("𝑎+", "11.3386pt"), ("+𝑏", "11.3386pt"), ("𝑏−", "11.3386pt"), ("−𝑐", "11.3386pt")],
         [("+−", "0.65em")],
@@ -78,9 +78,9 @@ def check_gallery(page):
          ("𝑐+", "0.12em"), ("+𝑑", "0.12em")],
         [("−𝑎", "0.08em"), ("𝑎−", "0.35em"), ("−𝑏", "0.35em")],
     ]
-    assert len(page.formulas) == 2 * len(expected)
+    assert len(formulas) == 2 * len(expected)
     for i, edges in enumerate(expected):
-        native, edited = page.formulas[2 * i:2 * i + 2]
+        native, edited = formulas[2 * i:2 * i + 2]
         assert structure(native) == structure(edited), f"estructura, fila {i + 1}"
         assert gallery_edges(native) == [] and gallery_edges(edited) == edges, f"fronteras, fila {i + 1}"
 
@@ -101,15 +101,18 @@ def check_scopes(native, changed):
 
 def check():
     with TemporaryDirectory() as tmp:
-        def render(name, ext="svg", *inputs):
-            args = ["typst", "compile", "--ignore-system-fonts"]
+        def render(name, ext="svg", *inputs, folder="probes", error=None):
+            args = ["typst", "compile", "--ignore-system-fonts", "--root", str(ROOT)]
             if ext == "html":
                 args.extend(["--features", "html"])
             for setting in inputs:
                 args.extend(["--input", setting])
             out = Path(tmp) / f"{name}.{ext}"
-            cmd = [*args, str(ROOT / "probes" / f"{name}.typ"), str(out)]
+            cmd = [*args, str(ROOT / folder / f"{name}.typ"), str(out)]
             result = subprocess.run(cmd, capture_output=True, text=True)
+            if error is not None:
+                assert result.returncode and error in result.stderr, result.stderr
+                return
             if result.returncode:
                 raise RuntimeError(result.stderr)
             return out.read_text(encoding="utf-8")
@@ -122,7 +125,22 @@ def check():
         cases = page("cases")
         assert cases.links == ["#primera", "#segunda"]
         assert [widths(eq) for eq in cases.formulas] == [["11.3386pt"] * 2] * 2
-        check_gallery(page("gallery"))
+        check_gallery(page("gallery").formulas)
+        gallery = MathPage(render("gallery", "html", folder="examples"))
+        check_gallery(gallery.formulas[:16])
+        assert len(gallery.formulas) == 24
+        for native, edited in zip(gallery.formulas[16::2], gallery.formulas[17::2]):
+            assert structure(native) == structure(edited)
+            assert widths(edited) and not widths(native)
+
+        assert "#ff4136" in render("package", folder="tests")
+        packaged = MathPage(render("package", "html", folder="tests"))
+        formula, = packaged.formulas
+        assert [op.text for op in formula.iter("mo")] == ["(", "+", ")", "/", "(", "+", ")"]
+        assert [n.text for n in formula.iter("mi")].count("𝑧") == 2
+        assert widths(formula) == ["11.3386pt"] * 4 and packaged.links == ["#control"]
+        render("package", "svg", "case=collision", folder="tests", error="Conflicting spacing")
+        render("package", "svg", "case=invalid", folder="tests", error="Expected a length")
         check_scopes(page("scopes"), page("scopes", "scope=edited"))
 
         original_nested = page("nested")
@@ -154,4 +172,4 @@ def check():
 if __name__ == "__main__":
     print(subprocess.check_output(["typst", "--version"], text=True).strip())
     check()
-    print("OK · Geometría, ocho comparaciones, estructura, MathML, referencias y controles negativos.")
+    print("OK · Sondas y paquete 0.1.0: geometría, 12 pares visuales, MathML, referencias y colisiones.")
