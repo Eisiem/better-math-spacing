@@ -23,7 +23,7 @@ fi
 
 parent="$packages/local/better-math-spacing"
 mkdir -p -- "$parent"
-link="$parent/0.1.0"
+link="$parent/0.1.1"
 if [ -L "$link" ] && [ "$(readlink "$link")" = "$repo" ]; then
   printf '%s\n' "$link"
   exit 0

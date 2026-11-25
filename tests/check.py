@@ -229,4 +229,4 @@ def check():
 if __name__ == "__main__":
     print(subprocess.check_output(["typst", "--version"], text=True).strip())
     check()
-    print("OK · Probes and package 0.1.0 passed geometry, 40 gallery equations, MathML, references and collision checks.")
+    print("OK · Probes and package passed geometry, 40 gallery equations, MathML, references and collision checks.")

@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.1.1 · Experimental
+
+- Translate the remaining design notes, audit reports and test fixtures into English.
+- Update the local installer and documented package import to 0.1.1.
+
 ## 0.1.0 · Experimental
 
 - Add declarative spacing for groups of symbols, math classes and element types.
