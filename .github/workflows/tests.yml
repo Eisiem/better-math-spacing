@@ -1,0 +1,34 @@
+name: Tests
+
+on: [push, pull_request, workflow_dispatch]
+
+permissions:
+  contents: read
+
+jobs:
+  regression:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: typst-community/setup-typst@v4
+        with:
+          typst-version: '0.15.1'
+      - name: Run regression tests
+        run: python3 tests/check.py
+      - name: Compile examples and check the gallery preview
+        run: |
+          mkdir -p build
+          for example in examples/*.typ; do
+            typst compile --root . --ignore-system-fonts "$example" "build/$(basename "$example" .typ).pdf"
+          done
+          typst compile --root . --ignore-system-fonts examples/gallery.typ build/gallery.svg
+          cmp docs/gallery.svg build/gallery.svg
+      - name: Test the local package from a separate project
+        run: |
+          export TYPST_PACKAGE_PATH="$RUNNER_TEMP/typst-packages"
+          ./scripts/link-local.sh
+          ./scripts/link-local.sh
+          mkdir -p "$RUNNER_TEMP/bms-example"
+          cp examples/quick-start.typ "$RUNNER_TEMP/bms-example/main.typ"
+          sed -i 's|../lib.typ|@local/better-math-spacing:0.1.0|' "$RUNNER_TEMP/bms-example/main.typ"
+          typst compile --ignore-system-fonts "$RUNNER_TEMP/bms-example/main.typ"

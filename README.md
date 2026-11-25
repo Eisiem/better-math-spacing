@@ -1,86 +1,113 @@
-# Better math spacing · 0.1.0
+# Better math spacing
 
-Ajusta la distancia entre átomos de una ecuación mediante reglas de Typst. La fórmula se escribe una sola vez. La regla de presentación conserva la ecuación original para etiquetas, numeración y referencias. Versión local probada con Typst 0.15.1, sin dependencias de ejecución.
+**Experimental 0.1.0 · Typst 0.15.1**
+
+Adjust spacing between math atoms with a Typst show rule. You write the equation once and specify which boundaries to adjust. The original equation retains its numbering, labels and references. The package has no runtime dependencies.
+
+## Install locally
+
+Use a checkout of the [GitHub repository](https://github.com/Eisiem/better-math-spacing) with Typst 0.15.1. On Linux or macOS, run the installer with Python 3 available:
+
+```sh
+git clone https://github.com/Eisiem/better-math-spacing.git
+cd better-math-spacing
+./scripts/link-local.sh
+```
+
+The script links the checkout into `local/better-math-spacing/0.1.0` under Typst's package directory. It uses `TYPST_PACKAGE_PATH` when set. Otherwise, it uses `${XDG_DATA_HOME:-$HOME/.local/share}/typst/packages` on Linux or `~/Library/Application Support/typst/packages` on macOS. The script prints the link path and can be run again for the same checkout. [Typst's local package documentation](https://github.com/typst/packages#local-packages)
+
+Run `typst info` to locate a custom package directory. Pass that directory as the script's only argument, or set `TYPST_PACKAGE_PATH` for both the installer and the compiler. To install manually, place a symlink to the checkout at `<package-directory>/local/better-math-spacing/0.1.0`. On Windows, a directory junction also works. Keep the checkout at its linked location. To uninstall, remove the link.
+
+## Quick start
+
+In any project compiled with your local Typst CLI:
 
 ```typst
-#import "lib.typ": group, rule, spacing
+#import "@local/better-math-spacing:0.1.0": group, spacing
 
 #show math.equation: spacing.with(groups: (
-  signos: group(sym.plus, sym.minus, before: 4mm, after: 4mm),
+  signs: group(sym.plus, sym.minus, before: 4mm, after: 4mm),
 ))
+
 $a + b - c$
 ```
 
-![Ocho ecuaciones comparadas en los perfiles nativo, compacto, jerárquico, adaptativo y amplio](docs/galeria.svg)
+## Gallery
 
-Los cinco perfiles son configuraciones de ejemplo. La galería los aplica a las mismas ocho ecuaciones. El informe incluye la cobertura, la compatibilidad y las medidas de hasta 5.000 ecuaciones. [Galería compilable](examples/gallery.typ) · [Configuraciones](examples/profiles.typ) · [Revisión arquitectónica y medidas comparadas](docs/revision.md) · [Auditoría de referencia](docs/auditoria.md)
+![Five spacing profiles applied to eight equations, including a matrix product, a difference quotient and a Riemann sum](docs/gallery.svg)
 
-## API
+Compact and wide scale estimated native spacing. Hierarchical draws attention to higher-ranking operators when other operator groups are present. Adaptive responds to density, separators and nesting depth. [Gallery source](examples/gallery.typ) · [Profile configurations](examples/profiles.typ)
 
-| Función | Uso |
+## API reference
+
+| Function | Behavior |
 | --- | --- |
-| `group(..members, before: none, after: none, test: none)` | Agrupa símbolos (`sym.plus`), clases (`"large"`) y funciones de elemento (`math.frac`). Basta que coincida un miembro. El predicado opcional se aplica además de esa coincidencia. Con cero miembros selecciona cualquier átomo que satisfaga el predicado. |
-| `rule(value, left: none, right: none, when: none)` | Aplica un valor a una frontera. Los filtros por nombre de grupo izquierdo, derecho y predicado se combinan con «y». |
-| `spacing(eq, groups: (:), rules: ())` | Se instala con `#show math.equation: spacing.with(...)`. Las claves del diccionario nombran los grupos. `rules` acepta una lista o una función que recibe la ecuación analizada y devuelve una lista. |
+| `group(..members, before: none, after: none, test: none)` | Matches any listed symbol, math class name or element function. An optional `test(atom)` must also accept the atom. With an empty member list, the predicate alone determines membership. |
+| `rule(value, left: none, right: none, when: none)` | Adjusts one boundary. When supplied, `left` and `right` name required groups on the respective sides. The optional `when(edge)` adds a condition. |
+| `spacing(eq, groups: (:), rules: ())` | Applies the configuration to a math equation. Bind the named arguments with `spacing.with(...)` in a show rule. `groups` maps names to groups. `rules` is an array or a function that accepts the equation view and returns an array. |
 
-**Un valor por frontera.** Cada grupo puede solicitar una longitud anterior y otra posterior en pt, mm, em o combinaciones de esas unidades. Dentro de un átomo prevalece el último grupo que declare ese lado. En la frontera se toma la petición anterior del átomo derecho y, si falta, la posterior del izquierdo. En ausencia de ambas se parte de `auto`. Las reglas se aplican después en orden de declaración.
+A group can set each side independently using lengths in pt, mm, em or a combination. On each atom, the last matching group that supplies a length for that side wins. At a boundary, the right atom's `before` takes precedence over the left atom's `after`. If neither is supplied, the starting value is `auto`.
 
-**Transformaciones.** Una longitud sustituye la distancia y `auto` devuelve la decisión a Typst. Un porcentaje multiplica la distancia acumulada o, si sigue en `auto`, la estimación del perfil nativo. Por ejemplo, `rule(150%)` amplía un 50 % el espaciado conocido y deja las fronteras desconocidas en `auto`. Un porcentaje en `rule` es un factor. Los márgenes de `group` requieren longitudes. Una función puede devolver cualquiera de estos valores.
+Rules run in declaration order. A length replaces the current value. `auto` returns the boundary to native spacing. A ratio such as `150%` scales the current length, or scales the native estimate when the current value is `auto` and an estimate exists. A callback can return any of these values.
+
+| Callback | Fields |
+| --- | --- |
+| Group predicate | `node` is the original content, `index` is its position in the flattened sequence, `class` is the math class, and `role` is `"unary"`, `"binary"` or `none`. Attachments inherit the class of their base. Symbol members match direct glyphs. |
+| Boundary predicate or value callback | `left` and `right` include the atom fields plus `groups`, `before`, `after`, and facing classes `l` and `r`. `left-class` and `right-class` name the opposing classes. `left-after` and `right-before` expose the group requests. `width` is the current value and `native` is the native estimate or `auto`. |
+| Boundary position | `run` contains the contiguous atoms and `index` is the zero-based position of the left atom within it. `path` leads from the equation body to the sequence. Each step supplies `parent` and `field`, with `index`, `row` or `col` where applicable. |
+| Equation callback | The equation view exposes the original `node` and accessible `runs`. The same view is available as `edge.equation` in boundary callbacks. Use this view to decide once per equation which rules to apply. |
+
+## Examples
+
+These examples use the same local import as above, with `rule` added to the import list.
+
+### Set an exception for two adjacent operators
+
+Give binary operators a trailing margin of 0.3 em, then add 1 pt when the next operator is unary.
 
 ```typst
-#import "lib.typ": group, rule, spacing
-
-#let grupos = (
-  binario: group(test: a => a.role == "binary"),
-  unario: group(test: a => a.role == "unary"),
+#let groups = (
+  binary: group(test: a => a.role == "binary"),
+  unary: group(test: a => a.role == "unary"),
 )
-#show math.equation: spacing.with(groups: grupos, rules: (
-  rule(0.3em, left: "binario"),
-  rule(e => e.width + 1pt, left: "binario", right: "unario"),
+#show math.equation: spacing.with(groups: groups, rules: (
+  rule(0.3em, left: "binary"),
+  rule(e => e.width + 1pt, left: "binary", right: "unary"),
 ))
 $a + -b$
 ```
 
-**Jerarquía contextual.** Este ejemplo mantiene la implicación aislada con su espacio nativo. Si aparece una igualdad en la misma subexpresión, duplica el espacio de la implicación. El cálculo utiliza el perfil del motor para el estilo matemático de esa frontera.
+### Widen implications when an equality is present
+
+The rule doubles the margins of `=>` when an equality occurs in the same run.
 
 ```typst
-#import "lib.typ": group, rule, spacing
-
 #show math.equation: spacing.with(
-  groups: (igualdad: group(sym.eq), implica: group(sym.arrow.r.double)),
+  groups: (equality: group(sym.eq), implies: group(sym.arrow.r.double)),
   rules: (rule(200%, when: e =>
-    "implica" in (e.left.groups + e.right.groups)
-      and e.run.any(a => "igualdad" in a.groups)),),
+    "implies" in (e.left.groups + e.right.groups)
+      and e.run.any(a => "equality" in a.groups)),),
 )
 $a => b$  $a = b => c$
 ```
 
-**Contexto de los predicados.**
+## Known limitations
 
-- `group(test: a => ...)` recibe el contenido original en `a.node`, la clase en `a.class` y el rol resuelto en `a.role` (`"unary"`, `"binary"` o `none`). Un adjunto hereda la clase de su base y conserva su tipo de elemento. Los miembros de tipo símbolo seleccionan glifos directos.
-- `when` y la función de transformación reciben `e.left` y `e.right` con sus listas de nombres `groups`. `e.left-class` y `e.right-class` son las clases enfrentadas. `e.left-after` y `e.right-before` contienen las peticiones originales o `none`. `e.width` es el valor acumulado y `e.native` es la estimación del espaciado automático o `auto`.
-- `e.index` indica la posición del átomo izquierdo en `e.run`, comenzando en cero. `e.path` contiene pasos desde la raíz con `parent`, `field` y, según el paso, `index`, `row` o `col`. Una celda, un índice y cada rama de una fracción tienen ámbitos independientes. Los espacios explícitos, saltos, puntos de alineación y regiones opacas separan las listas de vecinos. Los índices de los átomos se refieren a los hijos de la secuencia aplanada, incluidos esos separadores.
-- `e.equation.node` es la ecuación original. `e.equation.runs` contiene las listas de átomos accesibles. La variante `rules: eq => ...` recibe esa misma vista una vez por ecuación. La galería la usa para detectar un patrón en un lugar y aplicar su factor en toda la expresión.
+- The native profile estimates spacing from Typst's math classes and script styles. It uses `auto` for some font-dependent boundaries. [Typst 0.15.1 spacing algorithm](https://github.com/typst/typst/blob/v0.15.1/crates/typst-library/src/math/ir/process.rs#L256-L295)
+- Explicit spacing, text, opaque content, row breaks and alignment points divide editable runs. Typst handles the existing rows and alignment. Opaque roots and some nested compounds are delegated to Typst. The package also leaves boundaries native when adding a gap could change an operator's role.
+- Equal sequences in the same selector scope must receive the same plan. Two identical branches of one fraction produce a diagnostic if they request different plans. Separate siblings have independent scopes.
+- External show rules can change a class, size or content after the package analyzes an equation. Combine spacing transformations in a single `rules` array to control their order.
 
-## Alcance y límites
+## Development
 
-- El perfil reproduce las reglas de clases de Typst 0.15.1, usa sus constantes `math.thin`, `math.med` y `math.thick`, y tiene en cuenta el tamaño de índices, celdas y fracciones. Es una estimación previa al renderizado. Cuando interviene el espaciado textual de una cerca y la distancia depende de la fuente, el perfil devuelve `auto`. [Algoritmo del compilador](https://github.com/typst/typst/blob/v0.15.1/crates/typst-library/src/math/ir/process.rs#L256-L295)
-- El análisis recorre símbolos, números, operadores de texto simples, clases explícitas, delimitadores, raíces, fracciones, matrices, vectores y adjuntos. En una secuencia exterior, una caja, un envoltorio de estilo o una rama desconocida se conserva como una unidad. Se pueden ajustar los tramos a sus lados. Por ejemplo, en `$a+b "para" c+d$` ambos signos son editables y Typst compone el texto y sus dos bordes. Si el papel de un signo inmediatamente posterior a un elemento opaco es incierto, también se conservan sus márgenes nativos.
-- Los saltos de fila y los puntos de alineación del autor se conservan. En `$ a &+ b $` la frontera que atraviesa `&` queda a cargo de Typst. El signo conserva su rol binario y puede recibir un margen derecho. Un salto dentro de una celda puede ser descartado por el motor, por lo que el análisis es conservador en ese borde.
-- Cada hijo compuesto de la secuencia exterior recibe sus propios selectores. Dos fracciones hermanas con numeradores iguales pueden usar márgenes distintos mediante `e.path`. Dentro de una misma fracción, dos ramas iguales siguen compartiendo selector. Pedirles planes incompatibles produce un diagnóstico con las dos rutas. Si una rama opaca impediría aislar un selector, se conserva el compuesto entero. Una raíz opaca o una secuencia transparente etiquetada pueden hacer que se delegue la ecuación. Los contenedores originales conservan las etiquetas y los paréntesis privados de las fracciones horizontales.
-- Se determina el papel del signo antes de insertar un espacio a su izquierda. La frontera entre un delimitador inicial y un signo variable unario se conserva con el espaciado de Typst para preservar su forma en MathML. Un glifo variable que era binario recibe `math.class("binary", ...)` cuando hace falta conservar ese papel. En un operador variable compuesto que requeriría forzar la clase del conjunto, se delega la frontera. Una regla externa que cambie después la clase, el tamaño matemático o el contenido puede discrepar del análisis. Los estilos externos, las sustituciones independientes y las referencias tienen cobertura de regresión.
-
-## Compilar y verificar
-
-Desde la raíz del repositorio, con Typst 0.15.1 y Python 3:
+Run the regression suite with Typst 0.15.1 and Python 3:
 
 ```sh
-typst compile --root . examples/gallery.typ galeria.pdf
 python3 tests/check.py
+mkdir -p build
+typst compile --root . --ignore-system-fonts examples/gallery.typ build/gallery.pdf
 ```
 
-Para importar desde un documento en este repositorio, usa la ruta relativa a `lib.typ`. En un directorio local de paquetes con la estructura `local/better-math-spacing/0.1.0`, la importación es `#import "@local/better-math-spacing:0.1.0": group, rule, spacing`. El paquete está preparado para uso local. [Manifiesto](typst.toml)
+The suite covers rendered geometry, MathML, equation references, style interactions and scope collisions. The research reports and raw measurements are retained in Spanish. [Design notes](docs/diseno.md) · [Original audit](docs/auditoria.md) · [Comparative audit](docs/revision.md) · [Changelog](CHANGELOG.md)
 
-Las pruebas comparan geometría, posiciones de `mspace`, árboles MathML, roles, referencias y reglas de estilo. Las sondas originales siguen ejecutándose como controles independientes. [Diseño e investigación iniciales](docs/diseno.md) · [Pruebas del paquete](tests/package.typ)
-
-El código se distribuye bajo [licencia MIT](LICENSE). La tabla de clases incluye los [avisos de los datos de origen](NOTICE).
+The package is MIT-licensed. [License](LICENSE) · [Third-party data notices](NOTICE)
