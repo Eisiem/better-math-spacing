@@ -1,0 +1,10 @@
+[package]
+name = "better-math-spacing"
+version = "0.1.0"
+entrypoint = "lib.typ"
+authors = ["Eisiem"]
+description = "Context-sensitive spacing between mathematical atoms."
+compiler = "0.15.1"
+keywords = ["math", "spacing", "typography"]
+categories = ["math", "layout"]
+exclude = ["docs", "examples", "probes", "tests"]
