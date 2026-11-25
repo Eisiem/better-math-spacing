@@ -1,4 +1,4 @@
-# Row spacing in 0.1.1
+# Row spacing in 0.2.0
 
 ## Compatibility and geometry
 
@@ -63,7 +63,7 @@ The mixed control uses all 68 historical throughput cases, including the aligned
 
 ### Display equations without alignment markers
 
-This additional control typesets 1,000 distinct equations as display math. The three revisions or modes rotate order between rounds. Values are medians of three processes. The workload inputs are `workload=unaligned`, `count=1000`, `unique=true` and `display=true`. The final column pair also supplies `rows=aligned`.
+This additional control typesets 1,000 distinct equations as display math. The baseline, revised default and revised aligned mode rotate order between rounds. Values are medians of three processes. The workload inputs are `workload=unaligned`, `count=1000`, `unique=true` and `display=true`. The final column pair also supplies `rows=aligned`.
 
 | Profile | 0.1.1 time (s) | Revised time (s) | Opt-in time (s) | 0.1.1 RSS (MiB) | Revised RSS (MiB) | Opt-in RSS (MiB) |
 | --- | ---: | ---: | ---: | ---: | ---: | ---: |

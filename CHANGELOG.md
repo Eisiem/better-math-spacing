@@ -1,10 +1,11 @@
 # Changelog
 
-## Unreleased · 0.1.1 API extension
+## 0.2.0 · Experimental
 
-- Expose row-local atoms and row indices to spacing rules. Each nested sequence keeps its own rows.
-- Allow profiles to style eligible operator–term gaps across an alignment point and opt individual continuation signs into binary spacing for paged output.
-- Add a row hierarchy example and regressions for glyph positions, native operator roles and exported MathML.
+- Add opt-in row context through `rows: "context"` and `rows: "aligned"`. Boundary callbacks expose `edge.row.index`, `edge.row.atoms` and `edge.aligned` in these modes. Each nested sequence has its own rows.
+- Let profiles adjust eligible gaps across `&` in paged output. The `continuation` predicate can opt a leading sign into binary spacing through `spacing-role` while retaining its native role.
+- Keep cross-marker gaps native in HTML to preserve MathML operator form. Document Typst's identical content for spellings such as `xor` and `plus.o`.
+- Include a multiline gallery, a configurable row hierarchy and geometric and MathML regressions. [API reference](README.md#api-reference) · [Row audit](docs/row-audit.md)
 
 ## 0.1.1 · Experimental
 
